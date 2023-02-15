@@ -1,5 +1,5 @@
 # HUD-Support-Tool
-A simple tool leveraging PowerShell and Graph SDK to assist Digital Support in their business function. 
+A simple tool leveraging PowerShell and Graph SDK to assist Digital Support. 
 
 ## Comment
 This is an actively updated tool so the instructions/steps below may change over time however the process will remain the same for accessing the tool.
