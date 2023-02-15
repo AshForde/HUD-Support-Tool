@@ -8,7 +8,7 @@ function Show-Menu {
     Write-Host "7. Change users email address in Exchange Online"
     Write-Host "Q. Exit"
     Write-Host ""
-    $option = Read-Host "Enter your choice (1-5 or Q to exit)"
+    $option = Read-Host "Enter your choice (1-7 or Q to exit)"
     return $option
 }
 # 1: PIM elevate
