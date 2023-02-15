@@ -38,9 +38,9 @@ The administrator will be presented with a landing page displaying all the funct
 
 ![image](https://user-images.githubusercontent.com/108703933/219214012-2e5dc2d7-ba0d-49c4-bd21-ca4cc87ccd91.png)
 
-Each option actions a common task processed by Digital Support. My recommendation is to run the Elevating PIM roles task first to ensure you have the right access before running further tasks. Below is an example of running option 1. 
+Each option performs a common task processed by Digital Support. My recommendation is to run the Elevating PIM roles task first to ensure you have the right access before running further tasks. Below is an example of running option 1. 
 
-### 1. Elevating PIM Roles
+### Elevating PIM Roles
 
 1. Selecting option 1
 
