@@ -6,9 +6,10 @@ function Show-Menu {
     Write-Host "5. Add a DDI Phone Number to a user"
     Write-Host "6. Add/Change Aho 'Employee Category' to existing user"
     Write-Host "7. Change users email address in Exchange Online"
+    Write-Host "8. Run Basic Reports"
     Write-Host "Q. Exit"
     Write-Host ""
-    $option = Read-Host "Enter your choice (1-7 or Q to exit)"
+    $option = Read-Host "Enter your choice (1-5 or Q to exit)"
     return $option
 }
 # 1: PIM elevate
@@ -54,7 +55,7 @@ function New-PIMSession {
         }
         "3"{
             $Reason = Read-host "Please provide a reason for activating your Digital Workplace Support roles"
-            Enable-DCAzureADPIMRole -RolesToActivate 'Exchange Administrator', 'Global Reader', 'Intune Administrator', 'Teams Administrator', 'User Administrator', 'Compliance Administrator' `
+            Enable-DCAzureADPIMRole -RolesToActivate 'Exchange Administrator', 'Global Reader', 'Intune Administrator', 'Teams Communications Support Engineer', 'User Administrator', 'Compliance Administrator' `
             -UseMaximumTimeAllowed -Reason $Reason
         }
         "4"{
@@ -481,6 +482,160 @@ function Update-UserName {
 
 }
 
+# 8. Run Basic Report Extracts
+function Export-Reports {
+    # Location info
+    Clear-host
+    Write-Host ''
+    Write-Host "Please select report" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "    1. Export All Azure AD users"
+    Write-Host "    2. Export DL - ALL STAFF distribution members"
+    Write-Host "    3. Export DL - Wellington distribution members"
+    Write-Host "    4. Export DL - Auckland HUD Only distribution members"
+    Write-Host "    5. Select distribution list to export"
+
+    Write-Host ""
+    $Location = Read-Host "Please select Report"
+
+    Switch ($Location) {
+            "1" {
+                Connect-MgGraph -Scopes "Directory.Read.All", "Directory.ReadWrite.All", "User.Read.All", "User.ReadWrite.All","AuditLog.Read.All", "Organization.Read.All" | Out-Null
+
+                # Gather Users IDs and export details into custom table
+                $results = Get-MgUser -All | Select-Object -Property `
+                  Id, CreatedDateTime, AccountEnabled, UserType, DisplayName, GivenName, Surname, UserPrincipalName, Mail, UsageLocation,
+                  Department, JobTitle, CompanyName, StreetAddress, City, PostalCode, State, Country, SecurityIdentifier, MobilePhone, 
+                  @{Name='BusinessPhone';Expression={[string]$_.BusinessPhones -replace "{",'' }},
+                  @{Name='passwordPolicies';Expression={[string]$_.passwordPolicies}},
+                  @{Name='LastSignInDateTime';Expression={($_.SignInActivity | Select-Object -ExpandProperty SignInActivity).LastSignInDateTime}},
+                  @{Name='StartDate';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserStartDate']}},
+                  @{Name='EmployeeCategory';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserEmploymentCategory']}},
+                  @{Name='M365E3';Expression={if ($_.assignedLicenses.skuid -eq "05e9a617-0261-4cee-bb44-138d3ef5d965"){$true}else{$false}}},
+                  @{Name='M365E5';Expression={if ($_.assignedLicenses.skuid -eq "06ebc4ee-1bb5-47dd-8120-11324bc54e06"){$true}else{$false}}},
+                  @{Name='NoLicense';Expression={($_.assignedLicenses.count -eq 0)}},
+                  @{Name='RoomMailbox';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_RoomMailbox']}},
+                  @{Name='SharedMailbox';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_SharedMailbox']}}
+
+                  $counter = 0 
+                  $TotalCount = $Results.Count
+  
+                  $Results | ForEach-Object {
+    
+                    $counter++
+                    $percentComplete = ($counter / $TotalCount) * 100
+                    Write-Progress -Activity "Processing mailboxes..." -PercentComplete $percentComplete -Status "Processing mailbox $counter of $($results.Count)"
+                    #$_
+                  }
+
+                # Output the results to the console
+                $Folder = "$($env:homedrive)\HUD\06_Reporting"
+
+                if(Test-Path -Path $Folder) {
+                    "06_Reporting Folder exists..."
+                } else {
+                    New-Item -Path C:\HUD\ -Name 06_Reporting -ItemType Directory -Force -Confirm:$false
+                }
+
+                $Date = Get-Date -f yyyyMMddhhmm
+                $FileName = "Full_AAD_Report_$Date.CSV"
+                $Results | Export-CSV "$Folder\$FileName" -NoTypeInformation -Encoding UTF8
+
+                Write-Host "The report $FileName has been saved in C:\HUD\06_Reports\" -ForegroundColor Green
+
+            }
+            "2" {
+                # Connect to Exchange Online
+                $UserPrincipalName = Whoami /UPN
+                Connect-ExchangeOnline -UserPrincipalName $UserPrincipalName -ShowBanner:$false
+
+                # Gather all staff Dynamic Distribution Group Members
+                $Results = Get-DynamicDistributionGroupMember -Identity "DL - All Users" | Select DisplayName,PrimarySMTPAddress
+                
+                # Output the results to the console
+                $Folder = "$($env:homedrive)\HUD\06_Reporting"
+
+                if(Test-Path -Path $Folder) {
+                    "06_Reporting Folder exists..."
+                } else {
+                    New-Item -Path C:\HUD\ -Name 06_Reporting -ItemType Directory -Force -Confirm:$false
+                }
+
+                $Date = Get-Date -f yyyyMMddhhmm
+                $FileName = "DL - All Users_$Date.CSV"
+                $Results | Export-CSV "$Folder\$FileName" -NoTypeInformation -Encoding UTF8
+
+                Write-Host "The report $FileName has been saved in C:\HUD\06_Reports\" -ForegroundColor Green
+
+                Disconnect-ExchangeOnline -Confirm:$false
+
+            }
+            "3" {
+                # Connect to Exchange Online
+                $UserPrincipalName = Whoami /UPN
+                Connect-ExchangeOnline -UserPrincipalName $UserPrincipalName -ShowBanner:$false
+
+                # Gather all staff Dynamic Distribution Group Members
+                $Results = Get-DynamicDistributionGroupMember -Identity "DL - Wellington" | Select DisplayName,PrimarySMTPAddress
+                
+                # Output the results to the console
+                $Folder = "$($env:homedrive)\HUD\06_Reporting"
+
+                if(Test-Path -Path $Folder) {
+                    "06_Reporting Folder exists..."
+                } else {
+                    New-Item -Path C:\HUD\ -Name 06_Reporting -ItemType Directory -Force -Confirm:$false
+                }
+
+                $Date = Get-Date -f yyyyMMddhhmm
+                $FileName = "DL - Wellington_$Date.CSV"
+                $Results | Export-CSV "$Folder\$FileName" -NoTypeInformation -Encoding UTF8
+
+                Write-Host "The report $FileName has been saved in C:\HUD\06_Reports\" -ForegroundColor Green
+
+                Disconnect-ExchangeOnline -Confirm:$false
+
+            }
+            "4" {
+                # Connect to Exchange Online
+                $UserPrincipalName = Whoami /UPN
+                Connect-ExchangeOnline -UserPrincipalName $UserPrincipalName -ShowBanner:$false
+
+                # Gather all staff Dynamic Distribution Group Members
+                $Results = Get-DynamicDistributionGroupMember -Identity "DL - Auckland HUD Only" | Select DisplayName,PrimarySMTPAddress
+                
+                # Output the results to the console
+                $Folder = "$($env:homedrive)\HUD\06_Reporting"
+
+                if(Test-Path -Path $Folder) {
+                    "06_Reporting Folder exists..."
+                } else {
+                    New-Item -Path C:\HUD\ -Name 06_Reporting -ItemType Directory -Force -Confirm:$false
+                }
+
+                $Date = Get-Date -f yyyyMMddhhmm
+                $FileName = "DL - Auckland HUD Only_$Date.CSV"
+                $Results | Export-CSV "$Folder\$FileName" -NoTypeInformation -Encoding UTF8
+
+                Write-Host "The report $FileName has been saved in C:\HUD\06_Reports\" -ForegroundColor Green
+
+                Disconnect-ExchangeOnline -Confirm:$false
+       
+            }
+            "5" {
+             
+            }
+            "6" {
+            
+            }
+        }
+
+
+
+
+}
+
+
 #Select task based on Show-Menu function
 do
 {
@@ -496,6 +651,7 @@ do
                  '5' {Add-PhoneNumber}
                  '6' {Add-EmployeeCategory}
                  '7' {Update-UserName}
+                 '8' {Export-Reports}
                  'q' {return}
                  }
         pause
