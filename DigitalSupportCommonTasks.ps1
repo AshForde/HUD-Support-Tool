@@ -338,7 +338,7 @@ function Add-PhoneNumber{
     Connect-MgGraph -Scopes "Directory.Read.All", "Directory.ReadWrite.All", "User.Read.All", "User.ReadWrite.All" | Out-Null
    
     $UserPrincipalName = Whoami /UPN
-    Connect-MicrosoftTeams -AccountId $UserPrincipalName | Out-Null
+    Connect-MicrosoftTeams -AccountId $UserPrincipalName
     
     # Obtain User ID
     $User = Read-Host "Enter the User Principal Name of the user"
@@ -350,20 +350,21 @@ function Add-PhoneNumber{
     # Obtain users location
     $Location = (Get-mguser -UserId $User).OfficeLocation
     $DisplayName = (Get-mguser -UserId $User).DisplayName
-
+    $UserID = (Get-mguser -UserId $User).id
+    
     #Format DDI for Teams application "+64XXXXXXXX"
-    $DDI = $DDI -replace " ",''
+    $DDI = [string]$DDI -replace " ",''
 
     #Assign number in Microsoft Teams 
-    Set-CsPhoneNumberAssignment -Identity $User -PhoneNumber $DDI -PhoneNumberType DirectRouting | Out-Null      
-    Set-CsOnlineVoicemailUserSettings -Identity $User -VoicemailEnabled $true | Out-Null          
+    Set-CsPhoneNumberAssignment -Identity $UserID -PhoneNumber $DDI -PhoneNumberType DirectRouting    
+    #Set-CsOnlineVoicemailUserSettings -Identity $UserID -VoicemailEnabled $true       
 
     if ($Location -match 'Wellington') {
-        Grant-CsTenantDialPlan -Identity $User  -PolicyName "DP-04Region" | Out-Null   
-        Grant-CsOnlineVoiceRoutingPolicy -Identity $User  -PolicyName Tag:VP-Unrestricted | Out-Null   
+        Grant-CsTenantDialPlan -Identity $UserID  -PolicyName "DP-04Region"
+        Grant-CsOnlineVoiceRoutingPolicy -Identity $UserID  -PolicyName Tag:VP-Unrestricted
     } else {
-        Grant-CsTenantDialPlan -Identity $User -PolicyName "DP-09Region" | Out-Null   
-        Grant-CsOnlineVoiceRoutingPolicy -Identity $User -PolicyName Tag:VP-Unrestricted| Out-Null   
+        Grant-CsTenantDialPlan -Identity $UserID -PolicyName "DP-09Region"
+        Grant-CsOnlineVoiceRoutingPolicy -Identity $UserID -PolicyName Tag:VP-Unrestricted
     }
 
     # Result
