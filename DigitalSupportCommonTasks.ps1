@@ -9,7 +9,7 @@ function Show-Menu {
     Write-Host "8. Run Basic Reports"
     Write-Host "Q. Exit"
     Write-Host ""
-    $option = Read-Host "Enter your choice (1-5 or Q to exit)"
+    $option = Read-Host "Enter your choice (1-8 or Q to exit)"
     return $option
 }
 # 1: PIM elevate
