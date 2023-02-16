@@ -55,7 +55,7 @@ function New-PIMSession {
         }
         "3"{
             $Reason = Read-host "Please provide a reason for activating your Digital Workplace Support roles"
-            Enable-DCAzureADPIMRole -RolesToActivate 'Exchange Administrator', 'Global Reader', 'Intune Administrator', 'Teams Communications Support Engineer', 'User Administrator', 'Compliance Administrator' `
+            Enable-DCAzureADPIMRole -RolesToActivate 'Exchange Administrator', 'Global Reader', 'Intune Administrator', 'Teams Administrator', 'User Administrator', 'Compliance Administrator' `
             -UseMaximumTimeAllowed -Reason $Reason
         }
         "4"{
