@@ -18,7 +18,7 @@ function New-PIMSession {
     Write-Host ''
     Write-Host '## Elevate PIM roles ##' -ForegroundColor Yellow
     Write-Host '1. Global Administrator' -ForegroundColor Green
-    Write-Host '2. Cloud Operations - Testing' -ForegroundColor Green
+    Write-Host '2. Cloud Operations' -ForegroundColor Green
     Write-Host '3. Digital Workplace Support' -ForegroundColor Green
     Write-Host '4. Sharepoint Support' -ForegroundColor Green
 
@@ -55,7 +55,7 @@ function New-PIMSession {
         }
         "3"{
             $Reason = Read-host "Please provide a reason for activating your Digital Workplace Support roles"
-            Enable-DCAzureADPIMRole -RolesToActivate 'Azure AD Joined Device Local Administrator','Exchange Administrator', 'Global Reader', 'Intune Administrator', 'Teams Administrator', 'User Administrator', 'Compliance Administrator' `
+            Enable-DCAzureADPIMRole -RolesToActivate 'HelpDesk Administrator','User Administrator', 'Teams Communications Administrator', 'Exchange Recipient Administrator', 'Intune Administrator', 'Global Reader', 'Security Reader' `
             -UseMaximumTimeAllowed -Reason $Reason
         }
         "4"{
