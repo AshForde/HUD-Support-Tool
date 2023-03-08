@@ -38,11 +38,6 @@ function New-PIMSession {
             $Reason = Read-host "Please provide a reason for activating your Cloud Operations roles"
             Enable-DCAzureADPIMRole `
             -RolesToActivate `
-                'Attribute Assignment Administrator',`
-                'Attribute Assignment Reader',`
-                'Attribute Definition Administrator',`
-                'Attribute Definition Reader',`
-                'Azure AD Joined Device Local Administrator',`
                 'Billing Administrator',`
                 'Exchange Administrator',`
                 'Global Reader',`
@@ -338,7 +333,7 @@ function Add-PhoneNumber{
     Connect-MgGraph -Scopes "Directory.Read.All", "Directory.ReadWrite.All", "User.Read.All", "User.ReadWrite.All" | Out-Null
    
     $UserPrincipalName = Whoami /UPN
-    Connect-MicrosoftTeams -AccountId $UserPrincipalName
+    Connect-MicrosoftTeams -AccountId $UserPrincipalName -UseDeviceAuthentication
     
     # Obtain User ID
     $User = Read-Host "Enter the User Principal Name of the user"
