@@ -333,7 +333,7 @@ function Add-PhoneNumber{
     Connect-MgGraph -Scopes "Directory.Read.All", "Directory.ReadWrite.All", "User.Read.All", "User.ReadWrite.All" | Out-Null
    
     $UserPrincipalName = Whoami /UPN
-    Connect-MicrosoftTeams -AccountId $UserPrincipalName -UseDeviceAuthentication
+    Connect-MicrosoftTeams -AccountId $UserPrincipalName
     
     # Obtain User ID
     $User = Read-Host "Enter the User Principal Name of the user"
