@@ -48,14 +48,13 @@ function New-PIMSession {
                 'Teams Administrator',`
                 'User Administrator' -UseMaximumTimeAllowed -Reason $Reason
         }
-        "3"{
+        "3"{            
             $Reason = Read-host "Please provide a reason for activating your Digital Workplace Support roles"
             Enable-DCAzureADPIMRole `
             -RolesToActivate `
                 'Intune Administrator',`
                 'HelpDesk Administrator',`
                 'User Administrator',`
-                'Skype for Business Administrator',`
                 'Teams Communications Administrator',`
                 'Exchange Recipient Administrator',`
                 'Global Reader',`
@@ -340,9 +339,7 @@ function Add-PhoneNumber{
 
     # Connect to MgGraph and Microsoft Teams
     Connect-MgGraph -Scopes "Directory.Read.All", "Directory.ReadWrite.All", "User.Read.All", "User.ReadWrite.All" | Out-Null
-   
-    $UserPrincipalName = Whoami /UPN
-    Connect-MicrosoftTeams -AccountId $UserPrincipalName
+    Connect-MicrosoftTeams
     
     # Obtain User ID
     $User = Read-Host "Enter the User Principal Name of the user"
