@@ -62,7 +62,7 @@ function New-PIMSession {
             -UseMaximumTimeAllowed -Reason $Reason
         }
         "4"{
-            $Reason = Read-host "Please provide a reason for activating your Sharepoint Support roles"
+            $Reason = Read-host "Please provide a reason for activating your Information Management Support roles"
             Enable-DCAzureADPIMRole -RolesToActivate `
             'Global Reader','Teams Administrator', 'User Administrator', 'Sharepoint Administrator','Compliance Administrator','Compliance Data Administrator'
             -UseMaximumTimeAllowed -Reason $Reason
