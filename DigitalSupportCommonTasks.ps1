@@ -20,7 +20,7 @@ function New-PIMSession {
     Write-Host '1. Global Administrator' -ForegroundColor Green
     Write-Host '2. Cloud Operations' -ForegroundColor Green
     Write-Host '3. Digital Workplace Support' -ForegroundColor Green
-    Write-Host '4. Sharepoint Support' -ForegroundColor Green
+    Write-Host '4. Information Management' -ForegroundColor Green
 
     $PIM = Read-Host 'Please select your role based on the options Above (1-4)'
     
@@ -63,7 +63,8 @@ function New-PIMSession {
         }
         "4"{
             $Reason = Read-host "Please provide a reason for activating your Sharepoint Support roles"
-            Enable-DCAzureADPIMRole -RolesToActivate 'SharePoint Administrator','Teams Administrator', 'User Administrator' `
+            Enable-DCAzureADPIMRole -RolesToActivate `
+            'Global Reader','Teams Administrator', 'User Administrator', 'Sharepoint Administrator','Compliance Administrator','Compliance Data Administrator'
             -UseMaximumTimeAllowed -Reason $Reason
         }
     }
