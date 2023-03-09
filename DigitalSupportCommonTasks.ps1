@@ -21,6 +21,7 @@ function New-PIMSession {
     Write-Host '2. Cloud Operations' -ForegroundColor Green
     Write-Host '3. Digital Workplace Support' -ForegroundColor Green
     Write-Host '4. Information Management' -ForegroundColor Green
+    Write-Host '5. Security Operations' -ForegroundColor Green
 
     $PIM = Read-Host 'Please select your role based on the options Above (1-4)'
     
@@ -32,21 +33,35 @@ function New-PIMSession {
     Switch ($PIM) {
         "1" {       
             $Reason = Read-host "Please provide a reason for activating the Global Administrator role"
-            Enable-DCAzureADPIMRole -RolesToActivate 'Global Administrator' `
+            Enable-DCAzureADPIMRole `
+            -RolesToActivate `
+                'Global Administrator' `
             -UseMaximumTimeAllowed -Reason $Reason}
         "2"{
             $Reason = Read-host "Please provide a reason for activating your Cloud Operations roles"
             Enable-DCAzureADPIMRole `
             -RolesToActivate `
-                'Billing Administrator',`
-                'Exchange Administrator',`
                 'Global Reader',`
-                'Groups Administrator',`
+                'Security Administrator',`
+                'Application Administrator',`
+                'User Administrator',`
+                'Authentication Administrator',`
+                'Authentication Policy Administrator',`
+                'Azure Information Protection Administrator',`
+                'Cloud App Security Administrator',`
+                'Cloud Device Administrator',`
+                'Compliance Administrator',`
+                'Conditional Access Administrator',`
+                'Exchange Administrator',`
+                'Helpdesk Administrator',`
                 'Intune Administrator',`
-                'Security Reader',`
-                'SharePoint Administrator',`
+                'License Administrator',`
+                'Privileged Authentication Administrator',`
+                'Privileged Role Administrator',`
+                'Sharepoint Administrator',`
                 'Teams Administrator',`
-                'User Administrator' -UseMaximumTimeAllowed -Reason $Reason
+                'User Administrator' `
+            -UseMaximumTimeAllowed -Reason $Reason
         }
         "3"{            
             $Reason = Read-host "Please provide a reason for activating your Digital Workplace Support roles"
@@ -69,7 +84,23 @@ function New-PIMSession {
                 'User Administrator', `
                 'Sharepoint Administrator',`
                 'Compliance Administrator',`
-                'Compliance Data Administrator' -UseMaximumTimeAllowed -Reason $Reason
+                'Compliance Data Administrator',`
+                'Guest Inviter' `
+            -UseMaximumTimeAllowed -Reason $Reason
+        }
+        "5"{
+            $Reason = Read-host "Please provide a reason for activating your Security Operations roles"
+            Enable-DCAzureADPIMRole -RolesToActivate `
+                'Global Reader',`
+                'Security Administrator',`
+                'Compliance Administrator',`
+                'Exchange Administrator',`
+                'Conditional Access Administrator',`
+                'Attack Payload Author',`
+                'Attack Simulation Administrator',`
+                'Security Operator',`
+                'Security Reader' `
+            -UseMaximumTimeAllowed -Reason $Reason
         }
     }
 }
