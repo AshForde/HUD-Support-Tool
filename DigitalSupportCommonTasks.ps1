@@ -261,7 +261,13 @@ function New-SharedMailbox {
     # Connect to Exchange Online
     $UserPrincipalName = Whoami /UPN
     Connect-ExchangeOnline -UserPrincipalName $UserPrincipalName -ShowBanner:$false
-        
+    
+    # Connect to MgGraph and define scope for attribute addition on shared mailbox
+    Connect-MgGraph -Scopes "Directory.Read.All", "Directory.ReadWrite.All", "User.Read.All", "User.ReadWrite.All" | Out-Null
+
+    # Set Graph Schema (v1.0 or Beta)
+    Select-MgProfile -Name "v1.0" 
+    
     # Create Mailbox
     $SharedMBName = Read-Host "Please enter the name of the mailbox"
     $Alias = $SharedMBName -replace ' ',""
@@ -275,6 +281,12 @@ function New-SharedMailbox {
     Write-Host "ID: $(($Mailbox).Id)" -ForegroundColor Green
     Write-Host "Exchange GUID: $(($Mailbox.ExchangeGuid).Guid)" -ForegroundColor Green
     Write-Host ''
+
+    $Attributes =@{
+        'extension_56a473fa1d5b476484f306f7b06ee688_SharedMailbox' = $EmployeeCategory
+        }
+
+
 
     $title = "Add Users to Mailbox"
     $sendasmsg = "Would you like to add users to this mailbox?"
@@ -538,7 +550,9 @@ function Export-Reports {
 
     Switch ($Location) {
             "1" {
-                Connect-MgGraph -Scopes "Directory.Read.All", "Directory.ReadWrite.All", "User.Read.All", "User.ReadWrite.All","AuditLog.Read.All", "Organization.Read.All" | Out-Null
+                Connect-MgGraph -Scopes "User.Read.All", "Directory.Read.All", "User.ReadBasic.All", "Reports.Read.All", "AuditLog.Read.All", "Organization.Read.All"
+ 
+                Select-MgProfile -Name beta
 
                 # Gather Users IDs and export details into custom table
                 $results = Get-MgUser -All | Select-Object -Property `
@@ -546,7 +560,6 @@ function Export-Reports {
                   Department, JobTitle, CompanyName, StreetAddress, City, PostalCode, State, Country, SecurityIdentifier, MobilePhone, 
                   @{Name='BusinessPhone';Expression={[string]$_.BusinessPhones -replace "{",'' }},
                   @{Name='passwordPolicies';Expression={[string]$_.passwordPolicies}},
-                  @{Name='LastSignInDateTime';Expression={($_.SignInActivity | Select-Object -ExpandProperty SignInActivity).LastSignInDateTime}},
                   @{Name='StartDate';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserStartDate']}},
                   @{Name='EmployeeCategory';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserEmploymentCategory']}},
                   @{Name='M365E3';Expression={if ($_.assignedLicenses.skuid -eq "05e9a617-0261-4cee-bb44-138d3ef5d965"){$true}else{$false}}},
