@@ -423,7 +423,6 @@ function Add-PhoneNumber{
 # 6. Add Aho 'Employee Category' to existing user
 function Add-EmployeeCategory {
     Clear-Host
-    Write-Host ''
     Write-Host '## Check users Aho Employee Attributes ##' -ForegroundColor Yellow
     
     # Connect to MgGraph and define scope for user account creation
