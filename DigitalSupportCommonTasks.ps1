@@ -485,8 +485,8 @@ function Add-EmployeeCategory {
         }
     
         Write-Host "${UserPrincipalName} Employee Category is ${EmpCategory} with a start date of ${StartDate}" -ForegroundColor Green
-        Write-Host "Azure User ID: ${User.id}"
-        
+        Write-Host "Azure User ID: $User.id"
+
     } while ($true)
 }
 # 7. change users name and email in Azure AD and Exchange Online
