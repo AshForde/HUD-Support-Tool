@@ -485,7 +485,7 @@ function Add-EmployeeCategory {
         }
     
         Write-Host "${UserPrincipalName} Employee Category is ${EmpCategory} with a start date of ${StartDate}" -ForegroundColor Green
-        Write-Host "Azure User ID: $User.id"
+        Write-Host "Azure User ID: $($User.id)" -ForegroundColor Green
 
     } while ($true)
 }
