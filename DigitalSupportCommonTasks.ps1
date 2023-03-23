@@ -425,7 +425,7 @@ function Add-EmployeeCategory {
     Clear-Host
     Write-Host '## Check users Aho Employee Attributes ##' -ForegroundColor Yellow
     
-    # Connect to MgGraph and define scope for user account creation
+    # Connect to MgGraph and define scope for reviewing user account
     try {
         Connect-MgGraph -Scopes "Directory.Read.All", "Directory.ReadWrite.All", "User.Read.All", "User.ReadWrite.All" | Out-Null
     } catch {
@@ -449,8 +449,8 @@ function Add-EmployeeCategory {
     
         try {
             $User = Get-MgUser -UserId $UserPrincipalName -ErrorAction Stop
-            $EmpCategory = ($User.additionalproperties.extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserEmploymentCategory | Select-Object -First 1) -replace "_", " "
-            $StartDate = ($User.additionalproperties.extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserStartDate | Select-Object -First 1) -as [datetime]
+            $EmpCategory = ($User.additionalproperties.extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserEmploymentCategory | Select-Object -First 1)
+            $StartDate = ($User.additionalproperties.extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserStartDate | Select-Object -First 1)
     
             if ($EmpCategory -eq "HUD_SUBSTANTIVE_POSITION") {$EmpCategory = "Permanent"}
             elseif ($EmpCategory -eq "ORA_HRX_CONTRACTOR") {$EmpCategory = "Contractor"}
