@@ -424,61 +424,71 @@ function Add-PhoneNumber{
 function Add-EmployeeCategory {
     Clear-Host
     Write-Host ''
-    Write-Host '## Create a new user in Azure AD ##' -ForegroundColor Yellow
+    Write-Host '## Check users Aho Employee Attributes ##' -ForegroundColor Yellow
     
     # Connect to MgGraph and define scope for user account creation
-    Connect-MgGraph -Scopes "Directory.Read.All", "Directory.ReadWrite.All", "User.Read.All", "User.ReadWrite.All" | Out-Null
+    try {
+        Connect-MgGraph -Scopes "Directory.Read.All", "Directory.ReadWrite.All", "User.Read.All", "User.ReadWrite.All" | Out-Null
+    } catch {
+        Write-Host "Error connecting to Microsoft Graph. Please check your credentials and network connection." -ForegroundColor Red
+        exit 1
+    }
     
     # Set Graph Schema (v1.0 or Beta)
-    Select-MgProfile -Name "v1.0" 
+    Select-MgProfile -Name "Beta"
+    do {
+        # Employee Status
+        Write-Host ''
+        $UserPrincipalName = Read-Host "Enter the User Principal Name of the user (or 'q' to quit)"
+        
+        if ($UserPrincipalName -eq 'q') {
+            break
+        }
+        
+        # Return Aho Applied Start Date and Employee Category
+        Write-Host ''
     
-    #Employee Status
-    Write-Host ''
-    $UserPrincipalName = Read-Host "Enter the User Principal Name of the user"
-
-    $EmpCategory = Read-Host "Enter an employee category (Permanent, Contractor, Vendor, FixedTerm, Secondment)"
-    Switch ($EmpCategory) {
-        "Permanent" {$EmployeeCategory = "HUD_SUBSTANTIVE_POSITION"}
-        "Contractor"{$EmployeeCategory = "ORA_HRX_CONTRACTOR"}
-        "Vendor"{$EmployeeCategory = "ORA_HRX_CONSULTANT"}
-        "FixedTerm"{$EmployeeCategory = "HUD_FIX_TERM"}
-        "Secondment"{$EmployeeCategory = "HUD_EXTERNAL_SECONDMENT"}
-    }
+        try {
+            $User = Get-MgUser -UserId $UserPrincipalName -ErrorAction Stop
+            $EmpCategory = ($User.additionalproperties.extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserEmploymentCategory | Select-Object -First 1) -replace "_", " "
+            $StartDate = ($User.additionalproperties.extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserStartDate | Select-Object -First 1) -as [datetime]
     
-    # Start Date
-    Write-Host ''
-    $startDate = Read-Host "Please enter the users start date (dd/MM/yyyy). Hit enter if you want to leave blank."
+            if ($EmpCategory -eq "HUD_SUBSTANTIVE_POSITION") {$EmpCategory = "Permanent"}
+            elseif ($EmpCategory -eq "ORA_HRX_CONTRACTOR") {$EmpCategory = "Contractor"}
+            elseif ($EmpCategory -eq "ORA_HRX_CONSULTANT") {$EmpCategory = "Consultant"}
+            elseif ($EmpCategory -eq "HUD_EXTERNAL_SECONDMENT") {$EmpCategory = "External Secondment"}
+            elseif ($EmpCategory -eq "HUD_FIX_TERM") {$EmpCategory = "Fixed Term"}
+            elseif ($EmpCategory -eq "HUD_INTERNAL_SECONDMENT") {$EmpCategory = "Internal Secondment"}
+            elseif ($EmpCategory -eq "HUD_LEAVE_WO_PAY") {$EmpCategory = "Leave Without Pay"}
+            elseif ($EmpCategory -eq "HUD_PARENTAL_LEAVE") {$EmpCategory = "Parental Leave"}
+            elseif ($Null -eq $EmpCategory) {
+                $EmpCategory = Read-Host "No employee category assigned. Please enter an employee category for ${UserPrincipalName}:"
     
-    # Assign Custom Attributes
-    $Attributes =@{
-    'extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserEmploymentCategory' = $EmployeeCategory
-    'extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserStartDate'  = $startDate
-    }
-    if ($startDate -eq $null){
-        $Attributes =@{
-            'extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserEmploymentCategory' = $EmployeeCategory
+                $Attributes =@{
+                'extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserEmploymentCategory' = $EmpCategory
+                }
+    
+                Update-MgUser -UserId $UserPrincipalName -AdditionalProperties $Attributes
+    
+                if ($EmpCategory -eq '') {$EmpCategory = "No Category Assigned"}
             }
-        Update-MgUser -UserId $UserPrincipalName -AdditionalProperties $Attributes
-    } else {
-        $Attributes =@{
-            'extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserEmploymentCategory' = $EmployeeCategory
-            'extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserStartDate'  = $startDate
+        } catch [Microsoft.Graph.ServiceException] {
+            if ($_.Message -like "*Code: Request_ResourceNotFound*") {
+                Write-Host "User '$UserPrincipalName' not found. Please check if the User Principal Name is correct and try again." -ForegroundColor Red
+            } else {
+                Write-Host "Error retrieving user information. Please check if the User Principal Name is correct and try again." -ForegroundColor Red
             }
-        Update-MgUser -UserId $UserPrincipalName -AdditionalProperties $Attributes
-    }
-
-    # Obtain users Object ID
-    $id = (Get-MgUser -UserId $UserPrincipalName).Id
+            continue
+        } catch {
+            Write-Host "Error retrieving user information. Please check if the User Principal Name is correct and try again." -ForegroundColor Red
+            continue
+        }
     
-    # Output
-    Write-Host "Employee: $($UserPrincipalName) has been assigned the following Employee Category and Start Date" -ForegroundColor Cyan
-    Write-Host "Employee Category: $EmployeeCategory" -ForegroundColor Green
-    Write-Host "Start Date: $startDate" -ForegroundColor Green
-    Write-Host "ID: $id" -ForegroundColor Green
-    Write-Host ''
-
+        Write-Host "${UserPrincipalName} Employee Category is ${EmpCategory} with a start date of ${StartDate}" -ForegroundColor Green
+        Write-Host "Azure User ID: ${User.id}"
+        
+    } while ($true)
 }
-
 # 7. change users name and email in Azure AD and Exchange Online
 function Update-UserName {
     Clear-Host
