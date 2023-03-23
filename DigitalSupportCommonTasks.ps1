@@ -4,7 +4,7 @@ function Show-Menu {
     Write-Host "3. Create a new shared mailbox in Exchange Online"
     Write-Host "4. Check users mailbox access in Exchange Online"
     Write-Host "5. Add a DDI Phone Number to a user"
-    Write-Host "6. Add/Change Aho 'Employee Category' to existing user"
+    Write-Host "6. Check Aho Employee Category of User"
     Write-Host "7. Change users email address in Exchange Online"
     Write-Host "8. Run Basic Reports"
     Write-Host "Q. Exit"
