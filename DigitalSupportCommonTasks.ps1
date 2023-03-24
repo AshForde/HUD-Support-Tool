@@ -15,7 +15,6 @@ function Show-Menu {
 # 1: PIM elevate
 function New-PIMSession {
     Clear-Host
-    Write-Host ''
     Write-Host '## Elevate PIM roles ##' -ForegroundColor Yellow
     Write-Host '1. Global Administrator' -ForegroundColor Green
     Write-Host '2. Cloud Operations' -ForegroundColor Green
@@ -23,87 +22,88 @@ function New-PIMSession {
     Write-Host '4. Information Management' -ForegroundColor Green
     Write-Host '5. Security Operations' -ForegroundColor Green
 
-    $PIM = Read-Host 'Please select your role based on the options Above (1-4)'
-    
+    $roleSelection = Read-Host 'Please select your role based on the options above (1-5)'
+
+    switch ($roleSelection) {
+        "1" {
+            $rolesToActivate = 'Global Administrator'
+            $reason = Read-Host "Please provide a reason for activating the Global Administrator role"
+        }
+        "2" {
+            $rolesToActivate = @(
+                'Security Administrator',
+                'Application Administrator',
+                'User Administrator',
+                'Authentication Administrator',
+                'Authentication Policy Administrator',
+                'Azure Information Protection Administrator',
+                'Cloud App Security Administrator',
+                'Cloud Device Administrator',
+                'Compliance Administrator',
+                'Conditional Access Administrator',
+                'Exchange Administrator',
+                'Helpdesk Administrator',
+                'Intune Administrator',
+                'License Administrator',
+                'Privileged Authentication Administrator',
+                'Privileged Role Administrator',
+                'Sharepoint Administrator',
+                'Teams Administrator',
+                'User Administrator'
+            )
+            $reason = Read-Host "Please provide a reason for activating your Cloud Operations roles"
+        }
+        "3" {
+            $rolesToActivate = @(
+                'Intune Administrator',
+                'HelpDesk Administrator',
+                'User Administrator',
+                'Teams Communications Administrator',
+                'Exchange Recipient Administrator',
+                'Security Reader'
+            )
+            $reason = Read-Host "Please provide a reason for activating your Digital Workplace Support roles"
+        }
+        "4" {
+            $rolesToActivate = @(
+                'Teams Administrator',
+                'User Administrator',
+                'Sharepoint Administrator',
+                'Compliance Administrator',
+                'Compliance Data Administrator',
+                'Guest Inviter'
+            )
+            $reason = Read-Host "Please provide a reason for activating your Information Management Support roles"
+        }
+        "5" {
+            $rolesToActivate = @(
+                'Security Administrator',
+                'Compliance Administrator',
+                'Exchange Administrator',
+                'Conditional Access Administrator',
+                'Attack Payload Author',
+                'Attack Simulation Administrator',
+                'Security Operator',
+                'Security Reader'
+            )
+            $reason = Read-Host "Please provide a reason for activating your Security Operations roles"
+        }
+        default {
+            Write-Error "Invalid selection. Please select a number between 1 and 5."
+            return
+        }
+    }
+
     # Connect to Azure AD
     $upn = whoami /upn
     Connect-AzureAD -AccountId $upn
 
-    #PIM selection
-    Switch ($PIM) {
-        "1" {       
-            $Reason = Read-host "Please provide a reason for activating the Global Administrator role"
-            Enable-DCAzureADPIMRole `
-            -RolesToActivate `
-                'Global Administrator' `
-            -UseMaximumTimeAllowed -Reason $Reason}
-        "2"{
-            $Reason = Read-host "Please provide a reason for activating your Cloud Operations roles"
-            Enable-DCAzureADPIMRole `
-            -RolesToActivate `
-                'Global Reader',`
-                'Security Administrator',`
-                'Application Administrator',`
-                'User Administrator',`
-                'Authentication Administrator',`
-                'Authentication Policy Administrator',`
-                'Azure Information Protection Administrator',`
-                'Cloud App Security Administrator',`
-                'Cloud Device Administrator',`
-                'Compliance Administrator',`
-                'Conditional Access Administrator',`
-                'Exchange Administrator',`
-                'Helpdesk Administrator',`
-                'Intune Administrator',`
-                'License Administrator',`
-                'Privileged Authentication Administrator',`
-                'Privileged Role Administrator',`
-                'Sharepoint Administrator',`
-                'Teams Administrator',`
-                'User Administrator' `
-            -UseMaximumTimeAllowed -Reason $Reason
-        }
-        "3"{            
-            $Reason = Read-host "Please provide a reason for activating your Digital Workplace Support roles"
-            Enable-DCAzureADPIMRole `
-            -RolesToActivate `
-                'Intune Administrator',`
-                'HelpDesk Administrator',`
-                'User Administrator',`
-                'Teams Communications Administrator',`
-                'Exchange Recipient Administrator',`
-                'Global Reader',`
-                'Security Reader' `
-            -UseMaximumTimeAllowed -Reason $Reason
-        }
-        "4"{
-            $Reason = Read-host "Please provide a reason for activating your Information Management Support roles"
-            Enable-DCAzureADPIMRole -RolesToActivate `
-                'Global Reader',`
-                'Teams Administrator', `
-                'User Administrator', `
-                'Sharepoint Administrator',`
-                'Compliance Administrator',`
-                'Compliance Data Administrator',`
-                'Guest Inviter' `
-            -UseMaximumTimeAllowed -Reason $Reason
-        }
-        "5"{
-            $Reason = Read-host "Please provide a reason for activating your Security Operations roles"
-            Enable-DCAzureADPIMRole -RolesToActivate `
-                'Global Reader',`
-                'Security Administrator',`
-                'Compliance Administrator',`
-                'Exchange Administrator',`
-                'Conditional Access Administrator',`
-                'Attack Payload Author',`
-                'Attack Simulation Administrator',`
-                'Security Operator',`
-                'Security Reader' `
-            -UseMaximumTimeAllowed -Reason $Reason
-        }
-    }
+    # Activate PIM roles
+    Enable-DCAzureADPIMRole `
+        -RolesToActivate $rolesToActivate `
+        -UseMaximumTimeAllowed -Reason $reason
 }
+
 # 2: Create new user
 function New-HUDUser {
     Clear-Host
