@@ -6,7 +6,8 @@ function Show-Menu {
     Write-Host "5. Add a DDI Phone Number to a user"
     Write-Host "6. Check Aho Employee Category of User"
     Write-Host "7. Change users email address in Exchange Online"
-    Write-Host "8. Run Basic Reports"
+    Write-host "8. Remove Calendar Events for deleted user in Exchange Online"
+    Write-Host "9. Run Basic Reports"
     Write-Host "Q. Exit"
     Write-Host ""
     $option = Read-Host "Enter your choice (1-8 or Q to exit)"
@@ -541,7 +542,36 @@ function Update-UserName {
 
 }
 
-# 8. Run Basic Report Extracts
+# 8. Delete orphaned calendar events
+
+function Clear-CalendarEvents {
+    Clear-Host
+    Write-Host ''
+    Write-Host '## Removed orphaned calendar Events for deleted user in Exchange Online ##' -ForegroundColor Yellow
+
+    # Connect to Exchange Online
+    $UserPrincipalName = Whoami /UPN
+    Connect-ExchangeOnline -UserPrincipalName $UserPrincipalName -ShowBanner:$false
+
+    # Obtain User ID
+    $UserEmailAddress = Read-Host "Please enter the user's email address of the user you want to check"
+
+    # Remove calendar events organized by the deleted user
+    Remove-CalendarEvents `
+        -Identity $UserEmailAddress `
+        -CancelOrganizedMeetings `
+        -QueryWindowInDays 365 `
+        -Confirm:$false `
+        -Verbose
+    
+    # Disconnect from Exchange Online
+    Disconnect-ExchangeOnline
+
+    Clear-Host
+
+}
+
+# 9. Run Basic Report Extracts
 function Export-Reports {
     # Location info
     Clear-host
@@ -711,7 +741,8 @@ do
                  '5' {Add-PhoneNumber}
                  '6' {Add-EmployeeCategory}
                  '7' {Update-UserName}
-                 '8' {Export-Reports}
+                 '8' {Clear-CalendarEvents}
+                 '9' {Export-Reports}
                  'q' {return}
                  }
         pause
