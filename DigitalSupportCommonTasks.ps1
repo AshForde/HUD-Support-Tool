@@ -550,8 +550,7 @@ function Clear-CalendarEvents {
     Write-Host '## Removed orphaned calendar Events for deleted user in Exchange Online ##' -ForegroundColor Yellow
 
     # Connect to Exchange Online
-    $UserPrincipalName = Whoami /UPN
-    Connect-ExchangeOnline -UserPrincipalName $UserPrincipalName -ShowBanner:$false
+    Connect-ExchangeOnline -ShowBanner:$false
 
     # Obtain User ID
     $UserEmailAddress = Read-Host "Please enter the user's email address of the user you want to check"
