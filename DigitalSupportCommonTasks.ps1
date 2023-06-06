@@ -604,8 +604,8 @@ function Export-Reports {
                   @{Name='M365E5';Expression={if ($_.assignedLicenses.skuid -eq "06ebc4ee-1bb5-47dd-8120-11324bc54e06"){$true}else{$false}}},
                   @{Name='NoLicense';Expression={($_.assignedLicenses.count -eq 0)}},
                   @{Name='RoomMailbox';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_RoomMailbox']}},
-                  @{Name='SharedMailbox';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_SharedMailbox']}},
-                  @{Name='LastSignIn';Expression={[datetime]$_.SignInActivity.LastSignInDateTime}}
+                  @{Name='SharedMailbox';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_SharedMailbox']}}
+                  
 
                   $counter = 0 
                   $TotalCount = $Results.Count
