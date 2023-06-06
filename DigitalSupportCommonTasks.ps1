@@ -605,7 +605,7 @@ function Export-Reports {
                   @{Name='NoLicense';Expression={($_.assignedLicenses.count -eq 0)}},
                   @{Name='RoomMailbox';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_RoomMailbox']}},
                   @{Name='SharedMailbox';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_SharedMailbox']}},
-                  @{Name='LastSignIn';Expression={[datetime]$_.SignInActivity.LastSignInDateTime}}}
+                  @{Name='LastSignIn';Expression={[datetime]$_.SignInActivity.LastSignInDateTime}}
 
                   $counter = 0 
                   $TotalCount = $Results.Count
