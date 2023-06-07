@@ -588,51 +588,95 @@ function Export-Reports {
 
     Switch ($Location) {
             "1" {
-                Connect-MgGraph -Scopes "User.Read.All", "Directory.Read.All", "User.ReadBasic.All", "Reports.Read.All", "AuditLog.Read.All", "Organization.Read.All"
- 
+                Connect-MgGraph -Scopes "User.Read.All","Directory.Read.All","User.ReadBasic.All","Reports.Read.All","AuditLog.Read.All","Organization.Read.All"
                 Select-MgProfile -Name beta
-
-                # Gather Users IDs and export details into custom table
-                $results = Get-MgUser -All | Select-Object -Property `
-                  Id, CreatedDateTime, AccountEnabled, UserType, DisplayName, GivenName, Surname, UserPrincipalName, Mail, UsageLocation,
-                  Department, JobTitle, CompanyName, StreetAddress, City, PostalCode, State, Country, SecurityIdentifier, MobilePhone, 
-                  @{Name='BusinessPhone';Expression={[string]$_.BusinessPhones -replace "{",'' }},
-                  @{Name='passwordPolicies';Expression={[string]$_.passwordPolicies}},
-                  @{Name='StartDate';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserStartDate']}},
-                  @{Name='EmployeeCategory';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserEmploymentCategory']}},
-                  @{Name='M365E3';Expression={if ($_.assignedLicenses.skuid -eq "05e9a617-0261-4cee-bb44-138d3ef5d965"){$true}else{$false}}},
-                  @{Name='M365E5';Expression={if ($_.assignedLicenses.skuid -eq "06ebc4ee-1bb5-47dd-8120-11324bc54e06"){$true}else{$false}}},
-                  @{Name='NoLicense';Expression={($_.assignedLicenses.count -eq 0)}},
-                  @{Name='RoomMailbox';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_RoomMailbox']}},
-                  @{n='LastSignInDateTime'; e={[datetime]$_.SignInActivity.LastSignInDateTime}},
-                  @{Name='SharedMailbox';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_SharedMailbox']}}
-                  
-
-                  $counter = 0 
-                  $TotalCount = $Results.Count
-  
-                  $Results | ForEach-Object {
-    
-                    $counter++
-                    $percentComplete = ($counter / $TotalCount) * 100
-                    Write-Progress -Activity "Processing mailboxes..." -PercentComplete $percentComplete -Status "Processing mailbox $counter of $($results.Count)"
-                    #$_
-                  }
-
-                # Output the results to the console
-                $Folder = "$($env:homedrive)\HUD\06_Reporting"
-
-                if(Test-Path -Path $Folder) {
-                    "06_Reporting Folder exists..."
-                } else {
-                    New-Item -Path C:\HUD\ -Name 06_Reporting -ItemType Directory -Force -Confirm:$false
+            
+                # Obtain Last Sign Date Time (Non Standard property value)
+                $Results =@()
+                $results += Get-MgUser -All -Property id, SignInActivity | `
+                                Select-Object -Property id, @{Name='LastSignInDateTime';Expression={[datetime]$_.SignInActivity.LastSignInDateTime}}
+                # Gather other Attributes.
+                $Values =@()
+                $Values += Get-MgUser -all | Select-Object ID, CreatedDateTime, AccountEnabled, UserType, DisplayName, GivenName, Surname, UserPrincipalName, Mail, UsageLocation,
+                Department, JobTitle, CompanyName, StreetAddress, City, PostalCode, State, Country, SecurityIdentifier, MobilePhone, 
+                @{Name='BusinessPhones';Expression={[string]$_.BusinessPhones -replace "{",'' }},
+                @{Name='passwordPolicies';Expression={[string]$_.passwordPolicies}},
+                @{Name='StartDate';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserStartDate']}},
+                @{Name='EmployeeCategory';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_ObjectUserEmploymentCategory']}},
+                @{Name='M365E3';Expression={if ($_.assignedLicenses.skuid -eq "05e9a617-0261-4cee-bb44-138d3ef5d965"){$true}else{$false}}},
+                @{Name='M365E5';Expression={if ($_.assignedLicenses.skuid -eq "06ebc4ee-1bb5-47dd-8120-11324bc54e06"){$true}else{$false}}},
+                @{Name='NoLicense';Expression={($_.assignedLicenses.count -eq 0)}},
+                @{Name='RoomMailbox';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_RoomMailbox']}},
+                @{Name='SharedMailbox';Expression={$_.AdditionalProperties['extension_56a473fa1d5b476484f306f7b06ee688_SharedMailbox']}}
+                              
+                # Assuming $Results and $Values are the two arrays
+            
+                # Merge the arrays
+                $MergedArray = for ($i = 0; $i -lt $Results.Count; $i++) {
+                    $result = $Results[$i]
+                    $value = $Values[$i]
+            
+                    $result | Add-Member -MemberType NoteProperty -Name 'CreatedDateTime' -Value $value.CreatedDateTime
+                    $result | Add-Member -MemberType NoteProperty -Name 'AccountEnabled' -Value $value.AccountEnabled
+                    $result | Add-Member -MemberType NoteProperty -Name 'UserType' -Value $value.UserType
+                    $result | Add-Member -MemberType NoteProperty -Name 'DisplayName' -Value $value.DisplayName
+                    $result | Add-Member -MemberType NoteProperty -Name 'GivenName' -Value $value.GivenName
+                    $result | Add-Member -MemberType NoteProperty -Name 'Surname' -Value $value.Surname
+                    $result | Add-Member -MemberType NoteProperty -Name 'UserPrincipalName' -Value $value.UserPrincipalName
+                    $result | Add-Member -MemberType NoteProperty -Name 'Mail' -Value $value.Mail
+                    $result | Add-Member -MemberType NoteProperty -Name 'UsageLocation' -Value $value.UsageLocation
+                    $result | Add-Member -MemberType NoteProperty -Name 'Department' -Value $value.Department
+                    $result | Add-Member -MemberType NoteProperty -Name 'JobTitle' -Value $value.JobTitle
+                    $result | Add-Member -MemberType NoteProperty -Name 'CompanyName' -Value $value.CompanyName
+                    $result | Add-Member -MemberType NoteProperty -Name 'StreetAddress' -Value $value.StreetAddress
+                    $result | Add-Member -MemberType NoteProperty -Name 'City' -Value $value.City
+                    $result | Add-Member -MemberType NoteProperty -Name 'PostalCode' -Value $value.PostalCode
+                    $result | Add-Member -MemberType NoteProperty -Name 'State' -Value $value.State
+                    $result | Add-Member -MemberType NoteProperty -Name 'Country' -Value $value.Country
+                    $result | Add-Member -MemberType NoteProperty -Name 'SecurityIdentifier' -Value $value.SecurityIdentifier
+                    $result | Add-Member -MemberType NoteProperty -Name 'MobilePhone' -Value $value.MobilePhone
+                    $result | Add-Member -MemberType NoteProperty -Name 'BusinessPhones' -Value $value.BusinessPhones
+                    $result | Add-Member -MemberType NoteProperty -Name 'passwordPolicies' -Value $value.passwordPolicies
+                    $result | Add-Member -MemberType NoteProperty -Name 'StartDate' -Value $value.StartDate
+                    $result | Add-Member -MemberType NoteProperty -Name 'EmployeeCategory' -Value $value.EmployeeCategory
+                    $result | Add-Member -MemberType NoteProperty -Name 'M365E3' -Value $value.M365E3
+                    $result | Add-Member -MemberType NoteProperty -Name 'M365E5' -Value $value.M365E5
+                    $result | Add-Member -MemberType NoteProperty -Name 'NoLicense' -Value $value.NoLicense
+                    $result | Add-Member -MemberType NoteProperty -Name 'RoomMailbox' -Value $value.RoomMailbox
+                    $result | Add-Member -MemberType NoteProperty -Name 'SharedMailbox' -Value $value.SharedMailbox
+            
                 }
-
-                $Date = Get-Date -f yyyyMMddhhmm
-                $FileName = "Full_AAD_Report_$Date.CSV"
-                $Results | Export-CSV "$Folder\$FileName" -NoTypeInformation -Encoding UTF8
-
-                Write-Host "The report $FileName has been saved in C:\HUD\06_Reports\" -ForegroundColor Green
+            
+                # Display the merged array as a table
+                #$MergedArray | Format-Table -AutoSize
+                #$Results =@()
+                #$Values =@()
+            
+                $counter = 0 
+                $TotalCount = $Values.Count
+              
+                $Values | ForEach-Object {
+                
+                $counter++
+                $percentComplete = ($counter / $TotalCount) * 100
+                Write-Progress -Activity "Processing mailboxes..." -PercentComplete $percentComplete -Status "Processing mailbox $counter of $($results.Count)"
+                #$_
+                }
+            
+            # Output the results to the console
+            $Folder = "$($env:homedrive)\HUD\06_Reporting"
+            
+            if(Test-Path -Path $Folder) {
+                "06_Reporting Folder exists..."
+            } else {
+                New-Item -Path C:\HUD\ -Name 06_Reporting -ItemType Directory -Force -Confirm:$false
+            }
+            
+            $Date = Get-Date -f yyyyMMddhhmm
+            $FileName = "Full_AAD_Report_$Date.CSV"
+            $Results | Export-CSV "$Folder\$FileName" -NoTypeInformation -Encoding UTF8
+            
+            Write-Host "The report $FileName has been saved in C:\HUD\06_Reports\" -ForegroundColor Green
 
             }
             "2" {
