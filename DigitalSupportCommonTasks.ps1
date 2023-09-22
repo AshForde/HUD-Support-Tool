@@ -3,7 +3,7 @@ function Show-Menu {
     Write-Host "2. Create a new user in Azure AD"
     Write-Host "3. Create a new shared mailbox in Exchange Online"
     Write-Host "4. Check users mailbox access in Exchange Online"
-    Write-Host "5. Add a DDI Phone Number to a user"
+    Write-Host "(NO LONGER WORKS) 5. Add a DDI Phone Number to a user (NO LONGER WORKS)"
     Write-Host "6. Check Aho Employee Category of User"
     Write-Host "7. Change users email address in Exchange Online"
     Write-host "8. Remove Calendar Events for deleted user in Exchange Online"
@@ -382,6 +382,7 @@ function Search-MailboxAccess {
 
 # 5. Add a DDI Phone Number to a user
 function Add-PhoneNumber{
+    <#
     Clear-Host
     Write-Host ''
     Write-Host '## Add a DDI Phone Number to a user ##' -ForegroundColor Yellow
@@ -419,6 +420,8 @@ function Add-PhoneNumber{
 
     # Result
     Write-Host "$($DisplayName) has access to DDI: $($DDI) " -ForegroundColor Green
+    #>
+    Write-Error "Please make updates in Dynamics or Teams Admin Center"
 }
 
 # 6. Add Aho 'Employee Category' to existing user
