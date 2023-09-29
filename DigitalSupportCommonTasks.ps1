@@ -3,7 +3,6 @@ function Show-Menu {
     Write-Host "2. Create a new user in Azure AD"
     Write-Host "3. Create a new shared mailbox in Exchange Online"
     Write-Host "4. Check users mailbox access in Exchange Online"
-    Write-Host "(NO LONGER WORKS) 5. Add a DDI Phone Number to a user (NO LONGER WORKS)"
     Write-Host "6. Check Aho Employee Category of User"
     Write-Host "7. Change users email address in Exchange Online"
     Write-host "8. Remove Calendar Events for deleted user in Exchange Online"
@@ -378,50 +377,6 @@ function Search-MailboxAccess {
         Write-Host "The user $($UserEmailAddress) does not have access to any mailboxes." -ForegroundColor Green
     }
     
-}
-
-# 5. Add a DDI Phone Number to a user
-function Add-PhoneNumber{
-    <#
-    Clear-Host
-    Write-Host ''
-    Write-Host '## Add a DDI Phone Number to a user ##' -ForegroundColor Yellow
-
-    # Connect to MgGraph and Microsoft Teams
-    Connect-MgGraph -Scopes "Directory.Read.All", "Directory.ReadWrite.All", "User.Read.All", "User.ReadWrite.All" | Out-Null
-    Connect-MicrosoftTeams
-    
-    # Obtain User ID
-    $User = Read-Host "Enter the User Principal Name of the user"
-    $DDI = Read-Host "Enter the DDI phone number to be assigned. Copy/Paste from DDI Master List or use format +64 X XXX XXXX"   
-
-    # Assign Number in Azure AD
-    Update-MgUser -UserId $User -BusinessPhones $DDI
-
-    # Obtain users location
-    $Location = (Get-mguser -UserId $User).OfficeLocation
-    $DisplayName = (Get-mguser -UserId $User).DisplayName
-    $UserID = (Get-mguser -UserId $User).id
-    
-    #Format DDI for Teams application "+64XXXXXXXX"
-    $DDI = [string]$DDI -replace " ",''
-
-    #Assign number in Microsoft Teams 
-    Set-CsPhoneNumberAssignment -Identity $UserID -PhoneNumber $DDI -PhoneNumberType DirectRouting    
-    #Set-CsOnlineVoicemailUserSettings -Identity $UserID -VoicemailEnabled $true       
-
-    if ($Location -match 'Wellington') {
-        Grant-CsTenantDialPlan -Identity $UserID  -PolicyName "DP-04Region"
-        Grant-CsOnlineVoiceRoutingPolicy -Identity $UserID  -PolicyName Tag:VP-Unrestricted
-    } else {
-        Grant-CsTenantDialPlan -Identity $UserID -PolicyName "DP-09Region"
-        Grant-CsOnlineVoiceRoutingPolicy -Identity $UserID -PolicyName Tag:VP-Unrestricted
-    }
-
-    # Result
-    Write-Host "$($DisplayName) has access to DDI: $($DDI) " -ForegroundColor Green
-    #>
-    Write-Error "Please make updates in Dynamics or Teams Admin Center"
 }
 
 # 6. Add Aho 'Employee Category' to existing user
