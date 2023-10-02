@@ -547,15 +547,15 @@ function Export-Reports {
     Switch ($Location) {
             "1" {
                 Connect-MgGraph -Scopes "User.Read.All","Directory.Read.All","User.ReadBasic.All","Reports.Read.All","AuditLog.Read.All","Organization.Read.All"
-                Select-MgProfile -Name beta
+                #Select-MgProfile -Name beta
             
                 # Obtain Last Sign Date Time (Non Standard property value)
                 $Results =@()
-                $results += Get-MgUser -All -Property id, SignInActivity | `
+                $results += Get-MgBetaUser -All -Property id, SignInActivity | `
                                 Select-Object -Property id, @{Name='LastSignInDateTime';Expression={[datetime]$_.SignInActivity.LastSignInDateTime}}
                 # Gather other Attributes.
                 $Values =@()
-                $Values += Get-MgUser -all | Select-Object ID, CreatedDateTime, AccountEnabled, UserType, DisplayName, GivenName, Surname, UserPrincipalName, Mail, UsageLocation,
+                $Values += Get-MgBetaUser -all | Select-Object ID, CreatedDateTime, AccountEnabled, UserType, DisplayName, GivenName, Surname, UserPrincipalName, Mail, UsageLocation,
                 Department, JobTitle, CompanyName, StreetAddress, City, PostalCode, State, Country, SecurityIdentifier, MobilePhone, 
                 @{Name='BusinessPhones';Expression={[string]$_.BusinessPhones -replace "{",'' }},
                 @{Name='passwordPolicies';Expression={[string]$_.passwordPolicies}},
