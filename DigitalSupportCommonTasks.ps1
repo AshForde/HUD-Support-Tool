@@ -25,11 +25,25 @@ function Show-Menu {
     Write-Host "    13. Get List Item Report"
     Write-Host "    14. Generate Basic Site Report"
     Write-Host "    15. Move files between (TBC)" -ForegroundColor Red
+    Write-Host "" 
+    Write-Host "  Intune Reporting" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "    16. Get All Apps and Group Assignments"
+    Write-Host "    17. Generate All Discovered Apps Report"
 
     Write-Host ""    
 
     $option = Read-Host "Enter your number choice (or Q to exit)"
     return $option
+}
+function AppAssignments {
+    Clear-Host
+    Write-Warning "Minimum Entra PIM role required to run this report: Intune Administrator"
+
+    start-sleep 3
+
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Intune/Reporting/Report_App_Assignments.ps1"
+    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 
 function New-PIMSession {
@@ -182,6 +196,8 @@ do
                  '12' {Get-DLGroupMember}
                  '13' {Get-SPOListItemReport}
                  '14' {Get-SPOBasicSiteReport}
+                 '15' {}
+                 '16' {AppAssignments}
                  'q'  {return}
                  }
         pause
