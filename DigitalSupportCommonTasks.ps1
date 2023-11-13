@@ -45,7 +45,15 @@ function AppAssignments {
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Intune/Reporting/Report_App_Assignments.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
+function DiscoveredApps {
+    Clear-Host
+    Write-Warning "Minimum Entra PIM role required to run this report: Intune Administrator"
 
+    start-sleep 3
+
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Intune/Reporting/Report_Discovered_Apps.ps1"
+    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+}
 function New-PIMSession {
     Clear-Host
     Write-Warning "Please ensure you have been granted access to your selected role before attempting to activate"
@@ -198,6 +206,7 @@ do
                  '14' {Get-SPOBasicSiteReport}
                  '15' {}
                  '16' {AppAssignments}
+                 '17' {DiscoveredApps}
                  'q'  {return}
                  }
         pause
