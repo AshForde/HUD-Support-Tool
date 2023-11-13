@@ -36,7 +36,7 @@ function Show-Menu {
     $option = Read-Host "Enter your number choice (or Q to exit)"
     return $option
 }
-function AppAssignments {
+function Get-AppAssignments {
     Clear-Host
     Write-Warning "Minimum Entra PIM role required to run this report: Intune Administrator"
 
@@ -45,7 +45,7 @@ function AppAssignments {
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Intune/Reporting/Report_App_Assignments.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
-function DiscoveredApps {
+function Get-DiscoveredApps {
     Clear-Host
     Write-Warning "Minimum Entra PIM role required to run this report: Intune Administrator"
 
@@ -204,9 +204,9 @@ do
                  '12' {Get-DLGroupMember}
                  '13' {Get-SPOListItemReport}
                  '14' {Get-SPOBasicSiteReport}
-                 '15' {}
-                 '16' {AppAssignments}
-                 '17' {DiscoveredApps}
+                 '15' {Test-AppLockerPolicy}
+                 '16' {Get-AppAssignments}
+                 '17' {Get-DiscoveredApps}
                  'q'  {return}
                  }
         pause
