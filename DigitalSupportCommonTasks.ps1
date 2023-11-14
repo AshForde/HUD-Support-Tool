@@ -15,7 +15,7 @@ function Show-Menu {
     Write-Host ""
     Write-Host "    7.  Create a new shared mailbox" 
     Write-Host "    8.  Get mailbox access report for user" 
-    Write-Host "    9.  Set calendar delegate access for user (TBC)" -ForegroundColor Red
+    Write-Host "    9.  Modify calendar permissions/delegate access for user"
     Write-Host "    10. Update approved senders on distribution lists"
     Write-Host "    11. Remove calendar Events for user"
     Write-Host "    12. Distribution list members report"
@@ -35,6 +35,15 @@ function Show-Menu {
 
     $option = Read-Host "Enter your number choice (or Q to exit)"
     return $option
+}
+function Get-DelegateAccess {
+    Clear-Host
+    Write-Warning "Minimum Entra PIM role required to run this report: Exchange Recipient Administrator"
+
+    start-sleep 3
+
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Exchange/Get-CalendarDelegates.ps1"
+    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 function Get-AppAssignments {
     Clear-Host
@@ -119,11 +128,6 @@ function Get-UserMailboxAccess {
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Exchange/Check_Mailbox_Access.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
-function Update-CalendarDelegate {
-    Write-Host ""
-    Write-host "This function is a work in progress" -ForegroundColor Red
-    Write-Host ""
-}
 function Edit-DLApprovedSenders {
     Clear-Host
     Write-Warning "Minimum Entra PIM role required to run this report: Exchange Recipient Administrator"
@@ -198,7 +202,7 @@ do
                  '6'  {Update-AllowedDomains}
                  '7'  {New-SharedMailbox}
                  '8'  {Get-UserMailboxAccess}
-                 '9'  {Update-CalendarDelegate}
+                 '9'  {Get-DelegateAccess}
                  '10' {Edit-DLApprovedSenders}
                  '11' {Remove-CalendarEventsForUser}
                  '12' {Get-DLGroupMember}
