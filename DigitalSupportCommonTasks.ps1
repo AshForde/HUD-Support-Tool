@@ -1,38 +1,82 @@
 function Show-Menu {
-    Write-Host ""
-    Write-Warning "Ensure you have the right permissions to run these commands"
-    Write-Host ""
-    Write-Host "  Entra (formally Azure AD)" -ForegroundColor Cyan
-    Write-Host ""
-    Write-Host "    1.  Activate Entra PIM Role(s)" #
-    Write-Host "    2.  Entra All Users report" #
-    Write-Host "    3.  Entra Nested Security Groups report" #
-    Write-Host "    4.  Check User Aho Assignment Status" #
-    Write-Host "    5.  Change Username and Email Address of User" #
-    Write-Host "    6.  Add/Remove domain from external access (TBC)" -ForegroundColor Red
-    Write-Host ""
-    Write-Host "  Exchange Online" -ForegroundColor Cyan
-    Write-Host ""
-    Write-Host "    7.  Create a new shared mailbox" 
-    Write-Host "    8.  Get mailbox access report for user" 
-    Write-Host "    9.  Modify calendar permissions/delegate access for user"
-    Write-Host "    10. Update approved senders on distribution lists"
-    Write-Host "    11. Remove calendar Events for user"
-    Write-Host "    12. Distribution list members report"
-    Write-Host ""
-    Write-Host "  SharePoint Online" -ForegroundColor Cyan
-    Write-Host ""
-    Write-Host "    13. Get List Item Report"
-    Write-Host "    14. Generate Basic Site Report"
-    Write-Host "    15. Move files between (TBC)" -ForegroundColor Red
-    Write-Host "" 
-    Write-Host "  Intune Reporting" -ForegroundColor Cyan
-    Write-Host ""
-    Write-Host "    16. Get All Apps and Group Assignments"
-    Write-Host "    17. Generate All Discovered Apps Report"
+# Define the menu items for each column
+$column1Items = @(
+    "ENTRA ID"
+    ""
+    "  1.  Activate Entra PIM Role(s)"
+    "  2.  Entra All Users report"
+    "  3.  Entra Nested Security Groups report"
+    "  4.  Check User Aho Assignment Status"
+    "  5.  Change Username and Email Address of User"
+    "  *6.  Add/Remove domain from external access (TBC)*"
+    ""
+    "EXCHANGE ONLINE"
+    ""
+    "  7.  Create a new shared mailbox" 
+    "  8.  Get mailbox access report for user" 
+    "  9.  Modify calendar permission/delegate access"
+    "  10. Update approved senders on distribution lists"
+    "  11. Remove calendar Events for user"
+    "  12. Distribution list members report"
+    ""
+    "SHAREPOINT ONLINE"
+    ""
+    "  13. Get List Item Report",
+    "  14. Generate Basic Site Report",
+    "  *15. Move files between (TBC)*"
 
-    Write-Host ""    
+)
 
+$column2Items = @(
+    "INTUNE"
+    ""
+    "  16. Get All Apps and Group Assignments"
+    "  17. Generate All Discovered Apps Report"
+    ""
+    "TEAMS"
+    ""
+
+
+)
+
+# Define a fixed width for the first column, enough to accommodate the longest line
+$column1Width = 60
+
+# Write the header
+Write-Host "## HUD Digital Support Tool ##" -ForegroundColor Yellow
+Write-Host "WARNING: Ensure you have the right permissions to run these commands" -ForegroundColor Red
+Write-Host ""
+
+# Print the menu items side by side
+for ($i = 0; $i -lt [Math]::Max($column1Items.Length, $column2Items.Length); $i++) {
+    $column1Text = $column1Items[$i] -replace "`t","    " # replace tabs with spaces if needed
+    $column2Text = $column2Items[$i] -replace "`t","    " # replace tabs with spaces if needed
+
+    # Check if we have an item for the current index in each column
+    if ($null -eq $column1Text) { $column1Text = "" }
+    if ($null -eq $column2Text) { $column2Text = "" }
+
+    # Determine if the item is a heading
+    $isColumn1Heading = $column1Text -match "^\D+$" # Matches text that doesn't contain numbers
+    $isColumn2Heading = $column2Text -match "^\D+$" # Matches text that doesn't contain numbers
+
+    # Print the items with padding to align the columns
+    $formattedColumn1Text = $column1Text.PadRight($column1Width)
+    
+    # Apply color to headings
+    if ($isColumn1Heading) {
+        Write-Host $formattedColumn1Text -NoNewline -ForegroundColor Cyan
+    } else {
+        Write-Host $formattedColumn1Text -NoNewline
+    }
+    
+    if ($isColumn2Heading) {
+        Write-Host $column2Text -ForegroundColor Cyan
+    } else {
+        Write-Host $column2Text
+    }
+}
+    Write-Host ""
     $option = Read-Host "Enter your number choice (or Q to exit)"
     return $option
 }
@@ -190,8 +234,6 @@ function Get-SPOBasicSiteReport {
 do
 {
     Clear-Host
-    Write-Host ""
-    Write-Host '## HUD Digital Support Tool ##' -ForegroundColor Yellow
     $selection = Show-Menu
     switch ($selection) {
                  '1'  {New-PIMSession}
