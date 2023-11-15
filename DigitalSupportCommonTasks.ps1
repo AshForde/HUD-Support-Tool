@@ -21,9 +21,9 @@ $column1Items = @(
     ""
     "SHAREPOINT ONLINE"
     ""
-    "  13. Get List Item Report",
-    "  14. Generate Basic Site Report",
-    "  *15. Move files between (TBC)*"
+    "  13. Get List Item Report"
+    "  14. Generate Basic Site Report"
+    "  15. Move files between"
 
 )
 
@@ -230,6 +230,16 @@ function Get-SPOBasicSiteReport {
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)  
     
 }
+function Move-SPOFolders {
+    Clear-Host
+    Write-Warning "Minimum Entra PIM role required to run this report: SharePoint Administrator"
+    Write-Warning "Alternatively you must have full permissions to the respective site to run this"
+
+    start-sleep 3
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/SharePoint%20Online/Move-Folders.ps1"
+    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)  
+    
+}
 #Select task based on Show-Menu function
 do
 {
@@ -250,7 +260,7 @@ do
                  '12' {Get-DLGroupMember}
                  '13' {Get-SPOListItemReport}
                  '14' {Get-SPOBasicSiteReport}
-                 '15' {Test-AppLockerPolicy}
+                 '15' {Move-SPOFolders}
                  '16' {Get-AppAssignments}
                  '17' {Get-DiscoveredApps}
                  'q'  {return}
