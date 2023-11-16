@@ -36,6 +36,9 @@ $column2Items = @(
     ""
     "TEAMS"
     ""
+    "  19. Get All Teams Owner and Members Report"
+    "  20. Get Users Teams Access Report"
+    ""
 
 
 )
@@ -82,6 +85,27 @@ for ($i = 0; $i -lt [Math]::Max($column1Items.Length, $column2Items.Length); $i+
     $option = Read-Host "Enter your number choice (or Q to exit)"
     return $option
 }
+
+function Get-TeamAccessReportForUser {
+    Clear-Host
+    Write-Warning "Minimum Entra PIM role required to run this report: Teams Administrator"
+
+    start-sleep 3
+
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Teams/Get-TeamAccessReportForUser.ps1"
+    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+}
+
+function Get-AllTeamMembersAndOwners {
+    Clear-Host
+    Write-Warning "Minimum Entra PIM role required to run this report: Teams Administrator"
+
+    start-sleep 3
+
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Teams/Get-AllTeamMembersAndOwners.ps1"
+    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+}
+
 
 function Get-SPOAuditUser {
     Clear-Host
@@ -276,6 +300,8 @@ do
                  '16' {Get-SPOAuditUser}
                  '17' {Get-AppAssignments}
                  '18' {Get-DiscoveredApps}
+                 '19' {Get-AllTeamMembersAndOwners}
+                 '20' {Get-TeamAccessReportForUser}
                  'q'  {return}
                  }
         pause
