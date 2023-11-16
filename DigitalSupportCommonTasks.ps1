@@ -273,8 +273,9 @@ do
                  '13' {Get-SPOListItemReport}
                  '14' {Get-SPOBasicSiteReport}
                  '15' {Move-SPOFolders}
-                 '16' {Get-AppAssignments}
-                 '17' {Get-DiscoveredApps}
+                 '16' {Get-SPOAuditUser}
+                 '17' {Get-AppAssignments}
+                 '18' {Get-DiscoveredApps}
                  'q'  {return}
                  }
         pause
