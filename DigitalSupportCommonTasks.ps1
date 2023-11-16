@@ -23,15 +23,16 @@ $column1Items = @(
     ""
     "  13. Get List Item Report"
     "  14. Generate Basic Site Report"
-    "  15. Move files between"
+    "  15. Move between sites/libraries"
+    "  16. Audit: User Activity Search (SharePoint Only)"
 
 )
 
 $column2Items = @(
     "INTUNE"
     ""
-    "  16. Get All Apps and Group Assignments"
-    "  17. Generate All Discovered Apps Report"
+    "  17. Get All Apps and Group Assignments"
+    "  18. Generate All Discovered Apps Report"
     ""
     "TEAMS"
     ""
@@ -43,8 +44,9 @@ $column2Items = @(
 $column1Width = 60
 
 # Write the header
-Write-Host "## HUD Digital Support Tool ##" -ForegroundColor Yellow
-Write-Host "WARNING: Ensure you have the right permissions to run these commands" -ForegroundColor Red
+Write-Host "## HUD Digital Support Tool ##" -ForegroundColor Green
+Write-Host ""
+Write-Warning "Ensure you have the right permissions to run these commands"
 Write-Host ""
 
 # Print the menu items side by side
@@ -79,6 +81,16 @@ for ($i = 0; $i -lt [Math]::Max($column1Items.Length, $column2Items.Length); $i+
     Write-Host ""
     $option = Read-Host "Enter your number choice (or Q to exit)"
     return $option
+}
+
+function Get-SPOAuditUser {
+    Clear-Host
+    Write-Warning "Minimum Entra PIM role required to run this report: Compliance Administrator"
+
+    start-sleep 3
+
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Exchange/Get-CalendarDelegates.ps1"
+    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 function Get-DelegateAccess {
     Clear-Host
