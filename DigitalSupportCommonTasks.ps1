@@ -89,7 +89,7 @@ function Get-SPOAuditUser {
 
     start-sleep 3
 
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Exchange/Get-CalendarDelegates.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/SharePoint%20Online/Get-SPOUserAuditLog.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 function Get-DelegateAccess {
