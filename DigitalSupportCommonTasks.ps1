@@ -141,7 +141,13 @@ function Get-DiscoveredApps {
     start-sleep 3
 
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Intune/Reporting/Report_Discovered_Apps.ps1"
-    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+
+    $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+    $scriptContent | Out-File -FilePath "C:\HUD\00_Staging\Report_Discovered_Apps.ps1" -Encoding UTF8
+
+    $Platform = Read-Host "Enter the Platform value (Windows, AndroidWorkProfile, iOS)" 
+
+    & C:\HUD\00_Staging\Report_Discovered_Apps.ps1 -Platform $Platform
 }
 function New-PIMSession {
     Clear-Host
