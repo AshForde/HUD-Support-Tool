@@ -315,11 +315,12 @@ do
                  '13' {Get-SPOListItemReport}
                  '14' {Get-SPOBasicSiteReport}
                  '15' {Move-SPOFolders}
-                 '16' {Get-SPOAuditUser}
+                 '16' {"Please use option 21"}
                  '17' {Get-AppAssignments}
                  '18' {Get-DiscoveredApps}
                  '19' {Get-AllTeamMembersAndOwners}
                  '20' {Get-TeamAccessReportForUser}
+                 '21' {Get-UserActivityAuditReport}
                  'q'  {return}
                  }
         pause
