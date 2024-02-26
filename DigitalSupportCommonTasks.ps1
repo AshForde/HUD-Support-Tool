@@ -39,7 +39,10 @@ $column2Items = @(
     ""
     "COMPLIANCE (PURVIEW)"
     ""
-    "  21. Run User Activity Audit Report"
+    "  21. Audit Report - User Activity"
+    "  22. Audit Report - SPO Activity"
+
+
 
 
 
@@ -293,7 +296,15 @@ function Get-UserActivityAuditReport {
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Compliance/Audit_User_Report.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
+function Get-SPOActivityAuditReport {
+    Clear-Host
+    Write-Warning "Minimum Entra PIM role required to run this report: Compliance Administrator"
 
+    start-sleep 3
+
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Compliance/SPO_Activity_Report.ps1"
+    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+}
 #Select task based on Show-Menu function
 do
 {
@@ -321,6 +332,7 @@ do
                  '19' {Get-AllTeamMembersAndOwners}
                  '20' {Get-TeamAccessReportForUser}
                  '21' {Get-UserActivityAuditReport}
+                 '22' {Get-SPOActivityAuditReport}
                  'q'  {return}
                  }
         pause
