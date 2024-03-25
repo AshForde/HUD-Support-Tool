@@ -293,7 +293,7 @@ function Get-UserActivityAuditReport {
 
     start-sleep 3
 
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Compliance/Audit_User_Report.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Purview/Audit_User_Report.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 function Get-SPOActivityAuditReport {
@@ -302,7 +302,7 @@ function Get-SPOActivityAuditReport {
 
     start-sleep 3
 
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Compliance/SPO_Activity_Report.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Purview/SPO_Activity_Report.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 #Select task based on Show-Menu function
