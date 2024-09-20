@@ -165,18 +165,13 @@ function New-PIMSession {
 }
 function Export-AllUserReport {
     Clear-Host
-    Write-Warning "Minimum Entra PIM role required to run this report: User Administrator"
-
-    start-sleep 3
   
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Entra/Reports/Entra_All_Users.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 function Export-NestedGroupReport {
     Clear-Host
-    Write-Warning "Minimum Entra PIM role required to run this report: User Administrator & Exchange Recipient Administrator"
 
-    start-sleep 3
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Entra/Reports/Entra_Nested_Security_Group_Report.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
