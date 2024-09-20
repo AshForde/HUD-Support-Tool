@@ -177,9 +177,6 @@ function Export-NestedGroupReport {
 }
 function Get-EmployeeAssignment {
     Clear-Host
-    Write-Warning "Minimum Entra PIM role required to run this report: User Administrator"
-
-    start-sleep 3
   
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Entra/Get-AhoEmployeeAssignment.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
