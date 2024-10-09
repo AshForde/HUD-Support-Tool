@@ -166,7 +166,7 @@ function New-PIMSession {
 function Export-AllUserReport {
     Clear-Host
   
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Entra/Reports/Entra_All_Users.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/001_ENTRA_User_Report.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 function Export-NestedGroupReport {
