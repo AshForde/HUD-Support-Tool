@@ -25,12 +25,14 @@ function Show-Menu {
         "  14. Move between sites/libraries"
         "  15. Bulk Delete Files"
         ""
-        "ONE DRIVE"
-        ""
-        "  16. Get User File Types Report"
+
     )
 
     $column2Items = @(
+        "ONE DRIVE"
+        ""
+        "  16. Get User File Types Report"
+        ""
         "INTUNE"
         ""
         "  17. Get All Apps and Group Assignments"
