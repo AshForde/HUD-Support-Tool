@@ -25,9 +25,7 @@ function Show-Menu {
         "  14. Move between sites/libraries"
         "  15. Bulk Delete Files"
         ""
-
     )
-
     $column2Items = @(
         "ONE DRIVE"
         ""
@@ -48,7 +46,6 @@ function Show-Menu {
         "  21. Audit Report - User Activity"
         "  22. Audit Report - SPO Activity"
     )
-
     # Define a fixed width for the first column, enough to accommodate the longest line
     $column1Width = 60
 
