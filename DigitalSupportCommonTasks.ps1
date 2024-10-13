@@ -1,7 +1,7 @@
 function Show-Menu {
     # Define the menu items for each column
     $column1Items = @(
-        "ENTRA ID"
+        "ENTRA ID (AAD)"
         ""
         "  1.  Activate Entra PIM Role(s)"
         "  2.  REPORT: All User Accounts"
@@ -9,7 +9,7 @@ function Show-Menu {
         "  4.  ACTION: Check User AHO Assignment"
         "  5.  ACTION: Update User UPN and Email"
         ""
-        "EXCHANGE ONLINE"
+        "EXCHANGE ONLINE (EXO)"
         ""
         "  6.  Create a new shared mailbox" 
         "  7.  Get mailbox access report for user" 
@@ -18,7 +18,7 @@ function Show-Menu {
         "  10. Remove calendar Events for user"
         "  11. Distribution list members report"
         ""
-        "SHAREPOINT ONLINE"
+        "SHAREPOINT ONLINE (SPO)"
         ""
         "  12. Get List Item Report"
         "  13. Generate Basic Site Report"
@@ -27,24 +27,25 @@ function Show-Menu {
         ""
     )
     $column2Items = @(
-        "ONE DRIVE"
+        "ONE DRIVE (OD)"
         ""
         "  16. Get User File Types Report"
+        "  17. Bulk Delete OD Files"
         ""
-        "INTUNE"
+        "INTUNE (MAM)"
         ""
-        "  17. Get All Apps and Group Assignments"
-        "  18. Generate All Discovered Apps Report"
+        "  18. Get All Apps and Group Assignments"
+        "  19. Generate All Discovered Apps Report"
         ""
-        "TEAMS"
+        "TEAMS (MS TEAMS)"
         ""
-        "  19. Get All Teams Owner and Members Report"
-        "  20. Get Users Teams Access Report"
+        "  20. Get All Teams Owner and Members Report"
+        "  21. Get Users Teams Access Report"
         ""
         "COMPLIANCE (PURVIEW)"
         ""
-        "  21. Audit Report - User Activity"
-        "  22. Audit Report - SPO Activity"
+        "  22. Audit Report - User Activity"
+        "  23. Audit Report - SPO Activity"
     )
     # Define a fixed width for the first column, enough to accommodate the longest line
     $column1Width = 60
@@ -195,6 +196,17 @@ function Get-ODFileTypes {
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)  
 }
 
+function Remove-ODItems {
+    param (
+        [switch]$IncludeOneDriveSites
+    )
+    Clear-Host
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/010_SPO_Bulk_Delete_Files.ps1"
+    $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+    $scriptBlock = [scriptblock]::Create($scriptContent)
+    Invoke-Command -ScriptBlock $scriptBlock -ArgumentList $IncludeOneDriveSites
+}
+
 function Get-AppAssignments {
     Clear-Host
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/011_INTUNE_App_Assignment_Report.ps1"
@@ -259,12 +271,13 @@ do {
         '14' { Move-SPOFolders }
         '15' { Remove-SPOItems }
         '16' { Get-ODFileTypes }
-        '17' { Get-AppAssignments }
-        '18' { Get-DiscoveredApps }
-        '19' { Get-AllTeamMembersAndOwners }
-        '20' { Get-TeamAccessReportForUser }
-        '21' { Get-UserActivityAuditReport }
-        '22' { Get-SPOActivityAuditReport }
+        '17' { Remove-ODItems -IncludeOneDriveSites}
+        '18' { Get-AppAssignments }
+        '19' { Get-DiscoveredApps }
+        '20' { Get-AllTeamMembersAndOwners }
+        '21' { Get-TeamAccessReportForUser }
+        '22' { Get-UserActivityAuditReport }
+        '23' { Get-SPOActivityAuditReport }
         'q'  { return }
     }
     pause
