@@ -5,48 +5,48 @@ function Show-Menu {
         ""
         "  1.  ACTION: Activate Entra PIM Role(s)"
         "  2.  REPORT: M365 User Accounts"
-        "  24.  REPORT: M365 Guest Accounts"
-        "  3.  REPORT: Nested Security Groups"
-        "  4.  ACTION: Check User AHO Assignment"
-        "  5.  ACTION: Update User UPN and Email"
+        "  3.  REPORT: M365 Guest Accounts"
+        "  4.  REPORT: Nested Security Groups"
+        "  5.  ACTION: Check User AHO Assignment"
+        "  6.  ACTION: Update User UPN and Email"
         ""
         "EXCHANGE ONLINE (EXO)"
         ""
-        "  6.  ACTION: Create a new shared mailbox" 
-        "  7.  REPORT: User Mailbox Access" 
-        "  8.  ACTION: Modify calendar permission/delegate access"
-        "  9.  ACTION: Update approved senders on distribution lists"
-        "  10. ACTION: Remove calendar Events for user"
-        "  11. REPORT: Distribution Group Members"
+        "  7.  ACTION: Create a new shared mailbox" 
+        "  8.  REPORT: User Mailbox Access" 
+        "  9.  ACTION: Modify calendar permission/delegate access"
+        "  10.  ACTION: Update approved senders on distribution lists"
+        "  11. ACTION: Remove calendar Events for user"
+        "  12. REPORT: Distribution Group Members"
         ""
         "SHAREPOINT ONLINE (SPO)"
         ""
-        "  12. REPORT: List Item Report"
-        "  13. REPORT: Site Report"
-        "  14. ACTION: Move between sites/libraries"
-        "  15. ACTION: Bulk Delete Files"
+        "  13. REPORT: List Item Report"
+        "  14. REPORT: Site Report"
+        "  15. ACTION: Move between sites/libraries"
+        "  16. ACTION: Bulk Delete Files"
         ""
     )
     $column2Items = @(
         "ONE DRIVE (OD)"
         ""
-        "  16. REPORT: User File Types Report"
-        "  17. REPORT: Bulk Delete OD Files"
+        "  17. REPORT: User File Types Report"
+        "  18. REPORT: Bulk Delete OD Files"
         ""
         "INTUNE (MAM)"
         ""
-        "  18. REPORT: Get All Apps and Group Assignments"
-        "  19. REPORT: Generate All Discovered Apps"
+        "  19. REPORT: Get All Apps and Group Assignments"
+        "  20. REPORT: Generate All Discovered Apps"
         ""
         "TEAMS (MS TEAMS)"
         ""
-        "  20. REPORT: Get All Teams Owner and Members"
-        "  21. REPORT: Get Users Teams Access"
+        "  21. REPORT: Get All Teams Owner and Members"
+        "  22. REPORT: Get Users Teams Access"
         ""
         "COMPLIANCE (PURVIEW)"
         ""
-        "  22. REPORT: User Activity"
-        "  23. REPORT: SPO Activity"
+        "  23. REPORT: User Activity"
+        "  24. REPORT: SPO Activity"
     )
     # Define a fixed width for the first column, enough to accommodate the longest line
     $column1Width = 60
@@ -280,28 +280,29 @@ do {
     switch ($selection) {
         '1'  { New-PIMSession }
         '2'  { Export-AllUserReport }
-        '3'  { Export-NestedGroupReport }
-        '4'  { Get-EmployeeAssignment }
-        '5'  { Update-UserNameAndEmail }
-        '6'  { New-SharedMailbox }
-        '7'  { Get-UserMailboxAccess }
-        '8'  { Get-DelegateAccess }
-        '9'  { Edit-DLApprovedSenders }
-        '10' { Remove-CalendarEventsForUser }
-        '11' { Get-DLGroupMember }
-        '12' { Get-SPOListItemReport }
-        '13' { Get-SPOBasicSiteReport }
-        '14' { Move-SPOFolders }
-        '15' { Remove-SPOItems }
-        '16' { Get-ODFileTypes }
-        '17' { Remove-ODItems -IncludeOneDriveSites}
-        '18' { Get-AppAssignments }
-        '19' { Get-DiscoveredApps }
-        '20' { Get-AllTeamMembersAndOwners }
-        '21' { Get-TeamAccessReportForUser }
-        '22' { Get-UserActivityAuditReport }
-        '23' { Get-SPOActivityAuditReport }
-        '24' { Export-AllGuestsReport }
+        '3'  { Export-AllGuestsReport }
+        '4'  { Export-NestedGroupReport }
+        '5'  { Get-EmployeeAssignment }
+        '6'  { Update-UserNameAndEmail }
+        '7'  { New-SharedMailbox }
+        '8'  { Get-UserMailboxAccess }
+        '9'  { Get-DelegateAccess }
+        '10' { Edit-DLApprovedSenders }
+        '11' { Remove-CalendarEventsForUser }
+        '12' { Get-DLGroupMember }
+        '13' { Get-SPOListItemReport }
+        '14' { Get-SPOBasicSiteReport }
+        '15' { Move-SPOFolders }
+        '16' { Remove-SPOItems }
+        '17' { Get-ODFileTypes }
+        '18' { Remove-ODItems -IncludeOneDriveSites }
+        '19' { Get-AppAssignments }
+        '20' { Get-DiscoveredApps }
+        '21' { Get-AllTeamMembersAndOwners }
+        '22' { Get-TeamAccessReportForUser }
+        '23' { Get-UserActivityAuditReport }
+        '24' { Get-SPOActivityAuditReport }
+
         'q'  { return }
     }
     pause
