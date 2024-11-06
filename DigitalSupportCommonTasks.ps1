@@ -59,8 +59,8 @@ function Show-Menu {
 
     # Print the menu items side by side
     for ($i = 0; $i -lt [Math]::Max($column1Items.Length, $column2Items.Length); $i++) {
-        $column1Text = $column1Items[$i] -replace "`t","    " # replace tabs with spaces if needed
-        $column2Text = $column2Items[$i] -replace "`t","    " # replace tabs with spaces if needed
+        $column1Text = $column1Items[$i] -replace "`t", "    " # replace tabs with spaces if needed
+        $column2Text = $column2Items[$i] -replace "`t", "    " # replace tabs with spaces if needed
 
         # Check if we have an item for the current index in each column
         if ($null -eq $column1Text) { $column1Text = "" }
@@ -100,10 +100,25 @@ function New-PIMSession {
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 
+# Ensure the script is running with PowerShell 5
+if ($PSVersionTable.PSVersion.Major -ne 5) {
+    Write-Error "This script requires PowerShell version 5."
+    exit
+}
+
 function Export-AllUserReport {
     Clear-Host
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/001_ENTRA_User_Report.ps1"
-    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+
+    try {
+        $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+        $tempFile      = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.IO.Path]::GetRandomFileName() + ".ps1")
+        Set-Content -Path $tempFile -Value $scriptContent
+
+        Invoke-Expression "& `"$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe`" -File `"$tempFile`""
+    } catch {
+        Write-Error "Failed to download or execute the script from $scriptUrl. Error: $_"
+    }
 }
 
 function Export-NestedGroupReport {
@@ -127,7 +142,15 @@ function Update-UserNameAndEmail {
 function Export-AllGuestsReport {
     Clear-Host
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/022_ENTRA_Guest_Account_Report.ps1"
-    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+    try {
+        $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+        $tempFile      = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.IO.Path]::GetRandomFileName() + ".ps1")
+        Set-Content -Path $tempFile -Value $scriptContent
+
+        Invoke-Expression "& `"$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe`" -File `"$tempFile`""
+    } catch {
+        Write-Error "Failed to download or execute the script from $scriptUrl. Error: $_"
+    }
 }
 
 function New-SharedMailbox {
@@ -150,14 +173,14 @@ function Get-DelegateAccess {
 
 function Edit-DLApprovedSenders {
     Clear-Host
-    $DL = Read-Host "Please Enter Distribution List Name"
+    $DL     = Read-Host "Please Enter Distribution List Name"
     $Action = Read-Host "Please specify 'Add', 'Remove', 'Review' [Default is 'Review']"
     if (-not $Action) {
         $Action = 'Review'
     }   
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/019_EXO_Update_DL_Approved_Senders.ps1"
+    $scriptUrl     = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/019_EXO_Update_DL_Approved_Senders.ps1"
     $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
-    $scriptBlock = [scriptblock]::Create($scriptContent)
+    $scriptBlock   = [scriptblock]::Create($scriptContent)
     Invoke-Command -ScriptBlock $scriptBlock -ArgumentList $DL, $Action
 }
 
@@ -208,9 +231,9 @@ function Remove-ODItems {
         [switch]$IncludeOneDriveSites
     )
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/010_SPO_Bulk_Delete_Files.ps1"
+    $scriptUrl     = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/010_SPO_Bulk_Delete_Files.ps1"
     $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
-    $scriptBlock = [scriptblock]::Create($scriptContent)
+    $scriptBlock   = [scriptblock]::Create($scriptContent)
     Invoke-Command -ScriptBlock $scriptBlock -ArgumentList $IncludeOneDriveSites
 }
 
@@ -222,11 +245,11 @@ function Get-AppAssignments {
 
 function Get-DiscoveredApps {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/012_INTUNE_App_Discovery_Report.ps1"
+    $scriptUrl     = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/012_INTUNE_App_Discovery_Report.ps1"
     $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
     $scriptContent | Out-File -FilePath "C:\HUD\00_Staging\Report_Discovered_Apps.ps1" -Encoding UTF8
-    $Platform = Read-Host "Enter the Platform value (Windows, AndroidWorkProfile, iOS)" 
-    & C:\HUD\00_Staging\Report_Discovered_Apps.ps1 -Platform $Platform
+    $Platform = Read-Host "Enter the Platform value (Windows, AndroidWorkProfile, iOS)"
+    & C: \HUD\00_Staging\Report_Discovered_Apps.ps1 -Platform $Platform
 }
 
 function Get-AllTeamMembersAndOwners {
