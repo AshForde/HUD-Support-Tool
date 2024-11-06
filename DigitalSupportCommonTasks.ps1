@@ -99,13 +99,6 @@ function New-PIMSession {
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Entra/Enable_PIM_Assignments.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
-
-# Ensure the script is running with PowerShell 5
-if ($PSVersionTable.PSVersion.Major -ne 5) {
-    Write-Error "This script requires PowerShell version 5."
-    exit
-}
-
 function Export-AllUserReport {
     Clear-Host
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/001_ENTRA_User_Report.ps1"
