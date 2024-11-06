@@ -4,7 +4,8 @@ function Show-Menu {
         "ENTRA ID (AAD)"
         ""
         "  1.  ACTION: Activate Entra PIM Role(s)"
-        "  2.  REPORT: All User Accounts"
+        "  2.  REPORT: M365 User Accounts"
+        "  24.  REPORT: M365 Guest Accounts"
         "  3.  REPORT: Nested Security Groups"
         "  4.  ACTION: Check User AHO Assignment"
         "  5.  ACTION: Update User UPN and Email"
@@ -120,6 +121,12 @@ function Get-EmployeeAssignment {
 function Update-UserNameAndEmail {
     Clear-Host
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/004_ENTRA_Update_Username.ps1"
+    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+}
+
+function Export-AllGuestsReport {
+    Clear-Host
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/022_ENTRA_Guest_Account_Report.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 
@@ -278,6 +285,7 @@ do {
         '21' { Get-TeamAccessReportForUser }
         '22' { Get-UserActivityAuditReport }
         '23' { Get-SPOActivityAuditReport }
+        '24' { Export-AllGuestsReport }
         'q'  { return }
     }
     pause
