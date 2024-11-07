@@ -262,7 +262,16 @@ function Get-UserActivityAuditReport {
     Write-Warning "Minimum Entra PIM role required to run this report: Compliance Administrator"
     start-sleep 3
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Purview/Audit_User_Report.ps1"
-    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+    try {
+        $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+        $tempFile      = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.IO.Path]::GetRandomFileName() + ".ps1")
+        Set-Content -Path $tempFile -Value $scriptContent
+
+        Invoke-Expression "& `"$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe`" -File `"$tempFile`""
+    } catch {
+        Write-Error "Failed to download or execute the script from $scriptUrl. Error: $_"
+    }
+
 }
 
 function Get-SPOActivityAuditReport {
@@ -270,7 +279,15 @@ function Get-SPOActivityAuditReport {
     Write-Warning "Minimum Entra PIM role required to run this report: Compliance Administrator"
     start-sleep 3
     $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Purview/SPO_Activity_Report.ps1"
-    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+    try {
+        $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+        $tempFile      = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.IO.Path]::GetRandomFileName() + ".ps1")
+        Set-Content -Path $tempFile -Value $scriptContent
+
+        Invoke-Expression "& `"$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe`" -File `"$tempFile`""
+    } catch {
+        Write-Error "Failed to download or execute the script from $scriptUrl. Error: $_"
+    }
 }
 
 # Select task based on Show-Menu function
