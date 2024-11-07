@@ -15,7 +15,7 @@ function Show-Menu {
         "  7.  ACTION: Create a new shared mailbox" 
         "  8.  REPORT: User Mailbox Access" 
         "  9.  ACTION: Modify calendar permission/delegate access"
-        "  10.  ACTION: Update approved senders on distribution lists"
+        "  10. ACTION: Update approved senders on distribution lists"
         "  11. ACTION: Remove calendar Events for user"
         "  12. REPORT: Distribution Group Members"
         ""
