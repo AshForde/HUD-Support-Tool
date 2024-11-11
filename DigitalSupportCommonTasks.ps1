@@ -242,7 +242,7 @@ function Get-DiscoveredApps {
     $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
     $scriptContent | Out-File -FilePath "C:\HUD\00_Staging\Report_Discovered_Apps.ps1" -Encoding UTF8
     $Platform = Read-Host "Enter the Platform value (Windows, AndroidWorkProfile, iOS)"
-    & C: \HUD\00_Staging\Report_Discovered_Apps.ps1 -Platform $Platform
+    & C:\HUD\00_Staging\Report_Discovered_Apps.ps1 -Platform $Platform
 }
 
 function Get-AllTeamMembersAndOwners {
