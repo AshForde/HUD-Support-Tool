@@ -25,28 +25,29 @@ function Show-Menu {
         "  14. REPORT: Site Report"
         "  15. ACTION: Move between sites/libraries"
         "  16. ACTION: Bulk Delete Files"
+        "  17. REPORT: Site / Library / Folder Report"
         ""
     )
     $column2Items = @(
         "ONE DRIVE (OD)"
         ""
-        "  17. REPORT: User File Types Report"
-        "  18. REPORT: Bulk Delete OD Files"
+        "  18. REPORT: User File Types Report"
+        "  19. REPORT: Bulk Delete OD Files"
         ""
         "INTUNE (MAM)"
         ""
-        "  19. REPORT: Get All Apps and Group Assignments"
-        "  20. REPORT: Generate All Discovered Apps"
+        "  20. REPORT: Get All Apps and Group Assignments"
+        "  21. REPORT: Generate All Discovered Apps"
         ""
         "TEAMS (MS TEAMS)"
         ""
-        "  21. REPORT: Get All Teams Owner and Members"
-        "  22. REPORT: Get Users Teams Access"
+        "  22. REPORT: Get All Teams Owner and Members"
+        "  23. REPORT: Get Users Teams Access"
         ""
         "COMPLIANCE (PURVIEW)"
         ""
-        "  23. REPORT: User Activity"
-        "  24. REPORT: SPO Activity"
+        "  24. REPORT: User Activity"
+        "  25. REPORT: SPO Activity"
     )
     # Define a fixed width for the first column, enough to accommodate the longest line
     $column1Width = 60
@@ -290,6 +291,13 @@ function Get-SPOActivityAuditReport {
     }
 }
 
+
+function Generate-SPOSiteHierarchyView {
+    Clear-Host
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/d73d38d9092d0fc6e1f0713bf9c5dc35d4502327/_Projects/HUD%20Digital%20Support/Scripts/023_SPO_Site_Hierarchy_View.ps1"
+    Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
+}
+
 # Select task based on Show-Menu function
 do {
     Clear-Host
@@ -311,14 +319,15 @@ do {
         '14' { Get-SPOBasicSiteReport }
         '15' { Move-SPOFolders }
         '16' { Remove-SPOItems }
-        '17' { Get-ODFileTypes }
-        '18' { Remove-ODItems -IncludeOneDriveSites }
-        '19' { Get-AppAssignments }
-        '20' { Get-DiscoveredApps }
-        '21' { Get-AllTeamMembersAndOwners }
-        '22' { Get-TeamAccessReportForUser }
-        '23' { Get-UserActivityAuditReport }
-        '24' { Get-SPOActivityAuditReport }
+        '17' { Generate-SPOSiteHierarchyView }
+        '18' { Get-ODFileTypes }
+        '19' { Remove-ODItems -IncludeOneDriveSites }
+        '20' { Get-AppAssignments }
+        '21' { Get-DiscoveredApps }
+        '22' { Get-AllTeamMembersAndOwners }
+        '23' { Get-TeamAccessReportForUser }
+        '24' { Get-UserActivityAuditReport }
+        '25' { Get-SPOActivityAuditReport }
 
         'q'  { return }
     }
