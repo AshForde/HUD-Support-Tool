@@ -97,12 +97,12 @@ function New-PIMSession {
     Clear-Host
     Write-Warning "Please ensure you have been granted access to your selected role before attempting to activate"
     start-sleep 3
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Entra/refs/heads/main/hud.govt.nz/Project/Digital%20Support%20Tool%20Scripts/Admin_PIM_Role_Activation.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/000_ENTRA_Activate_PIM_Assignment.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 function Export-AllUserReport {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/001_ENTRA_User_Report.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/001_ENTRA_User_Report.ps1"
 
     try {
         $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
@@ -117,25 +117,25 @@ function Export-AllUserReport {
 
 function Export-NestedGroupReport {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/002_ENTRA_Nested_Group_Report.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/002_ENTRA_Nested_Group_Report.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 
 function Get-EmployeeAssignment {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/003_ENTRA_Update_Aho_Assignment.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/003_ENTRA_Update_Aho_Assignment.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 
 function Update-UserNameAndEmail {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/004_ENTRA_Update_Username.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/004_ENTRA_Update_Username.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 
 function Export-AllGuestsReport {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/022_ENTRA_Guest_Account_Report.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/022_ENTRA_Guest_Account_Report.ps1"
     try {
         $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
         $tempFile      = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.IO.Path]::GetRandomFileName() + ".ps1")
@@ -149,19 +149,19 @@ function Export-AllGuestsReport {
 
 function New-SharedMailbox {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/005_EXO_New_Shared_Mailbox.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/005_EXO_New_Shared_Mailbox.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 
 function Get-UserMailboxAccess {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/006_EXO_User_Access_Report.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/006_EXO_User_Access_Report.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 
 function Get-DelegateAccess {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/018_EXO_Update_Calendar_Delegates.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/018_EXO_Update_Calendar_Delegates.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 
@@ -172,7 +172,7 @@ function Edit-DLApprovedSenders {
     if (-not $Action) {
         $Action = 'Review'
     }   
-    $scriptUrl     = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/019_EXO_Update_DL_Approved_Senders.ps1"
+    $scriptUrl     = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/019_EXO_Update_DL_Approved_Senders.ps1"
     $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
     $scriptBlock   = [scriptblock]::Create($scriptContent)
     Invoke-Command -ScriptBlock $scriptBlock -ArgumentList $DL, $Action
@@ -180,43 +180,43 @@ function Edit-DLApprovedSenders {
 
 function Remove-CalendarEventsForUser {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/020_EXO_Remove_Calendar_Events.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/020_EXO_Remove_Calendar_Events.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)   
 }
 
 function Get-DLGroupMember {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/021_EXO_DL_Member_Report.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/021_EXO_DL_Member_Report.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)  
 }
 
 function Get-SPOListItemReport {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/008_SPO_List_Item_Report.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/008_SPO_List_Item_Report.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)  
 }
 
 function Get-SPOBasicSiteReport {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/007_SPO_Basic_Site_Report.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/007_SPO_Basic_Site_Report.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)  
 }
 
 function Move-SPOFolders {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/009_SPO_Move_Folders_Between_Sites.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/009_SPO_Move_Folders_Between_Sites.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)  
 }
 
 function Remove-SPOItems {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/010_SPO_Bulk_Delete_Files.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/010_SPO_Bulk_Delete_Files.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)  
 }
 
 function Get-ODFileTypes {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/017_OD_User_File_Report.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/017_OD_User_File_Report.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)  
 }
 
@@ -225,7 +225,7 @@ function Remove-ODItems {
         [switch]$IncludeOneDriveSites
     )
     Clear-Host
-    $scriptUrl     = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/010_SPO_Bulk_Delete_Files.ps1"
+    $scriptUrl     = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/010_SPO_Bulk_Delete_Files.ps1"
     $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
     $scriptBlock   = [scriptblock]::Create($scriptContent)
     Invoke-Command -ScriptBlock $scriptBlock -ArgumentList $IncludeOneDriveSites
@@ -233,13 +233,13 @@ function Remove-ODItems {
 
 function Get-AppAssignments {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/011_INTUNE_App_Assignment_Report.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/011_INTUNE_App_Assignment_Report.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 
 function Get-DiscoveredApps {
     Clear-Host
-    $scriptUrl     = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/012_INTUNE_App_Discovery_Report.ps1"
+    $scriptUrl     = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/012_INTUNE_App_Discovery_Report.ps1"
     $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
     $scriptContent | Out-File -FilePath "C:\HUD\00_Staging\Report_Discovered_Apps.ps1" -Encoding UTF8
     $Platform = Read-Host "Enter the Platform value (Windows, AndroidWorkProfile, iOS)"
@@ -248,13 +248,13 @@ function Get-DiscoveredApps {
 
 function Get-AllTeamMembersAndOwners {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/013_TEAMS_All_Team_Owners_And_Members.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/013_TEAMS_All_Team_Owners_And_Members.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 
 function Get-TeamAccessReportForUser {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/014_TEAMS_User_Access_Report.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/014_TEAMS_User_Access_Report.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 
@@ -294,7 +294,7 @@ function Get-SPOActivityAuditReport {
 
 function Generate-SPOSiteHierarchyView {
     Clear-Host
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/d73d38d9092d0fc6e1f0713bf9c5dc35d4502327/_Projects/HUD%20Digital%20Support/Scripts/023_SPO_Site_Hierarchy_View.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/refs/heads/main/_Projects/HUD%20Digital%20Support/Scripts/023_SPO_Site_Hierarchy_View.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 
