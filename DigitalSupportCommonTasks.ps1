@@ -97,7 +97,7 @@ function New-PIMSession {
     Clear-Host
     Write-Warning "Please ensure you have been granted access to your selected role before attempting to activate"
     start-sleep 3
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Entra/Enable_PIM_Assignments.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Entra/refs/heads/main/hud.govt.nz/Project/Digital%20Support%20Tool%20Scripts/Admin_PIM_Role_Activation.ps1"
     Invoke-Expression (New-Object System.Net.WebClient).DownloadString($scriptUrl)
 }
 function Export-AllUserReport {
