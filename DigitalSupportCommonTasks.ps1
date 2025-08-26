@@ -262,7 +262,7 @@ function Get-UserActivityAuditReport {
     Clear-Host
     Write-Warning "Minimum Entra PIM role required to run this report: Compliance Administrator"
     start-sleep 3
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Purview/Audit_User_Report.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/Audit_User_Report.ps1"
     try {
         $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
         $tempFile      = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.IO.Path]::GetRandomFileName() + ".ps1")
@@ -279,7 +279,7 @@ function Get-SPOActivityAuditReport {
     Clear-Host
     Write-Warning "Minimum Entra PIM role required to run this report: Compliance Administrator"
     start-sleep 3
-    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/Purview/SPO_Activity_Report.ps1"
+    $scriptUrl = "https://raw.githubusercontent.com/hud-govt-nz/Microsoft-365-and-Azure/main/_Projects/HUD%20Digital%20Support/Scripts/SPO_Activity_Report.ps1"
     try {
         $scriptContent = (New-Object System.Net.WebClient).DownloadString($scriptUrl)
         $tempFile      = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.IO.Path]::GetRandomFileName() + ".ps1")
