@@ -1,0 +1,13 @@
+{
+	// See http://go.microsoft.com/fwlink/?LinkId=827846
+	// for the documentation about the extensions.json format
+	"recommendations": [
+		"ms-vscode.PowerShell",
+		"DavidAnson.vscode-markdownlint",
+		"Gruntfuggly.todo-tree",
+		"ms-dotnettools.vscode-dotnet-pack",
+		"PowerQuery.vscode-powerquery",
+		"mechatroner.rainbow-csv",
+		"tal7aouy.theme"
+	]
+}

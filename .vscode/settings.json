@@ -1,0 +1,107 @@
+{
+    //-------- General Settings --------
+    "workbench.colorTheme": "Theme",
+    "update.mode": "none",
+
+    //-------- Exlude Folders --------
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/.gitignore": true,
+        "Defender": true,
+        "Entra": true,
+        "Exchange": true,
+        "Fabric": true,
+        "Intune": true,
+        "Purview": true,
+        //"SharePoint": true,
+        "Teams": true,
+        //"Notebooks": true,
+        "Az Automation": true,
+        "Az Functions": true,
+        "Az Logic App": true,
+        "Az Managed Identity": true,
+        "Maester": true,
+        "Intune Backup": true
+    },
+
+    //-------- File Associations --------
+    "files.associations": {
+        ".fantomasignore": "ignore",
+        "*.json": "jsonc"
+    },
+
+    //-------- Indentation configuration --------
+    "editor.detectIndentation": true,
+    "editor.formatOnPaste": true,
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4,
+    "editor.trimAutoWhitespace": true,
+    "editor.wordWrap": "on",
+    "editor.wordWrapColumn": 120,
+    "editor.mouseWheelZoom": true,
+
+    //-------- Files configuration --------
+    "files.autoGuessEncoding": true,
+    "files.encoding": "utf8bom",
+    "files.insertFinalNewline": true,
+
+    // When enabled, will trim trailing whitespace when you save a file.
+    "files.trimTrailingWhitespace": true,
+
+    // specifies the location of the explicitly ScriptAnalyzer settings file
+    "powershell.scriptAnalysis.settingsPath": ".\\vscode\\PSScriptAnalyzerSettings.psd1",
+
+    // specifies the PowerShell coding style used in this project (https://github.com/PoshCode/PowerShellPracticeAndStyle/issues/81)
+    "powershell.codeFormatting.preset": "Allman",
+    "powershell.codeFormatting.alignPropertyValuePairs": false,
+    "powershell.powerShellDefaultVersion": "PowerShell (x64)",
+    "dotnet.preferCSharpExtension": true,
+    "terminal.integrated.profiles.windows": {
+        "PowerShell 5": {
+            "path": [
+                "${env:windir}\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+            ],
+            "source": "PowerShell",
+            "icon": "terminal-powershell",
+            "args": [
+                "-NoLogo",
+                "-NoExit",
+                "-ExecutionPolicy",
+                "Bypass"
+            ]
+        },
+        "PowerShell (x64)": {
+            "path": [
+                "${env:programfiles}\\PowerShell\\7\\pwsh.exe"
+            ],
+            "source": "PowerShell",
+            "icon": "terminal-powershell",
+            "args": [
+                "-NoLogo",
+                "-NoExit",
+                "-ExecutionPolicy",
+                "Bypass"
+            ]
+        },
+        "pwsh": null,
+        "Command Prompt": null,
+        "Git Bash": null,
+        "PowerShell": null,
+        "JavaScript Debug Terminal": null,
+        "F# Interactive": null,
+        "Azure Cloud Shell (Bash)": null,
+        "Azure Cloud Shell (PowerShell)": null,
+        "Azure CLI": null,
+        "PowerShell Extension": null,
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell (x64)",
+
+    //-------- Github Copilot Settings (Beast Mode) --------
+    "chat.tools.autoApprove": true,
+    "chat.agent.maxRequests": 100,
+    "github.copilot.nextEditSuggestions.enabled": false
+}
